@@ -1,8 +1,9 @@
 # PXWeb
+---
+1. Copy the modules/px_web to the installation
+---
+2. Set up the theme
 
-1) Copy the modules/px_web to the installation
-
-2) Follow the instruction in themes\templates\SOMETEMPLATE\README.txt
 Edit the SOMETEMPLATE.libraries.yml
 global-js:
   js:
