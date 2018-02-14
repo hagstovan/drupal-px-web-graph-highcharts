@@ -53,7 +53,7 @@
         },
         yAxis: {
             title: {
-                text: "Test",
+                text: "",
                 style: {
                     color: "#000",
                     fontWeight: "normal",
@@ -302,6 +302,8 @@
         highchartsOptions.subtitle.text = pxData.subtitle;
         highchartsOptions.series = processedData;
         
+        if(pxData["yAxisName"])
+            highchartsOptions.yAxis.title.text = pxData["yAxisName"];
 
         if(isCategory) {       
             highchartsOptions.xAxis.min= null;

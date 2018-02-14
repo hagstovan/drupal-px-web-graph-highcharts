@@ -36,6 +36,14 @@ class StoredQueryFieldType extends FieldItemBase {
       ->setLabel(new TranslatableMarkup('Subtitle'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
+      $properties['yAxisName'] = DataDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('YAxisName'))
+      ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
+      ->setRequired(TRUE);
+      $properties['comment'] = DataDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('Comment'))
+      ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
+      ->setRequired(TRUE);
     $properties['displayType'] = DataDefinition::create('integer')
       ->setLabel(new TranslatableMarkup('displayMode'))
       ->setRequired(TRUE);;
@@ -77,6 +85,16 @@ class StoredQueryFieldType extends FieldItemBase {
           'binary' => $field_definition->getSetting('case_sensitive'),
         ],
         'subtitle' => [
+          'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
+          'length' => 65000,
+          'binary' => $field_definition->getSetting('case_sensitive'),
+        ],
+        'yAxisName' => [
+          'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
+          'length' => 65000,
+          'binary' => $field_definition->getSetting('case_sensitive'),
+        ],
+        'comment' => [
           'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
           'length' => 65000,
           'binary' => $field_definition->getSetting('case_sensitive'),
@@ -126,6 +144,8 @@ class StoredQueryFieldType extends FieldItemBase {
   public function isEmpty() {
     $title = $this->get('title')->getValue();
     $subtitle = $this->get('subtitle')->getValue();
+    $yAxisName = $this->get('yAxisName')->getValue();
+    $comment = $this->get('comment')->getValue();
     $displayType = $this->get('displayType')->getValue();
     $displayMode = $this->get('displayMode')->getValue();
     $savedResultUrl = $this->get('savedResultUrl')->getValue();
@@ -136,6 +156,8 @@ class StoredQueryFieldType extends FieldItemBase {
     
     return empty($title) &&
       empty($subtitle) &&
+      empty($yAxisName) &&
+      empty($comment) &&
       empty($displayType) && 
       empty($displayMode) && 
       empty($storedViewFromPx) && 

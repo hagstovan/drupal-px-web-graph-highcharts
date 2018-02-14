@@ -38,8 +38,11 @@ class StoredQueryFormatterType extends FormatterBase {
       $elements[$delta] = array(
         '#type' => 'markup',
         '#markup' => $markup,
+        '#theme' => 'px_web',
         '#title' => $item->title,
         '#subtitle' => $item->subtitle,
+        '#yAxisName' => $item->yAxisName,
+        '#comment' => $item->comment,
         '#displayType' => $item->displayType,
         '#displayMode' => $item->displayMode,
         '#savedResultUrl' => $item->savedResultUrl,

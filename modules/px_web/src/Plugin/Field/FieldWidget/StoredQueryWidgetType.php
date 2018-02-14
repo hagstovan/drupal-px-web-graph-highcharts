@@ -44,6 +44,18 @@ class StoredQueryWidgetType extends WidgetBase {
       '#default_value' => isset($items[$delta]->subtitle) ? $items[$delta]->subtitle : "",
     ];
 
+    $element['yAxisName'] = [
+      '#type' => 'textfield',
+      '#title' => 'Navn á Y-ása',
+      '#default_value' => isset($items[$delta]->yAxisName) ? $items[$delta]->yAxisName : "",
+    ];
+
+    $element['comment'] = [
+      '#type' => 'textfield',
+      '#title' => 'Viðmerking',
+      '#default_value' => isset($items[$delta]->comment) ? $items[$delta]->comment : "",
+    ];
+
     $element['displayType'] = [
       '#type' => 'radios',
       '#title' => 'Vel Slag',
@@ -84,21 +96,20 @@ class StoredQueryWidgetType extends WidgetBase {
       '#type' => 'textfield',
       '#title' => 'Raðnøvn',      
       '#prefix' => '<div><span class="display-options-label"><strong>Uppsetan</strong></span><div class="display-options-wrapper">',
-      '#attributes' => ['class' => ['edit-field-display-options']],
       '#default_value' => isset($items[$delta]->seriesNames) ? $items[$delta]->seriesNames : "",
     ];
 
     $element['seriesColor'] = [
       '#type' => 'textfield',
       '#title' => 'Raðlitir',      
-      '#attributes' => ['class' => ['edit-field-display-options']],
       '#default_value' => isset($items[$delta]->seriesColor) ? $items[$delta]->seriesColor : "",
     ];
 
     $element['displayOptions'] = [
       '#type' => 'textarea',
       '#title' => 'Uppsetan',      
-      '#suffix' => '</div></div>',
+      '#prefix' => '<div class="display-options-wrapper">',
+      '#suffix' => '<div class="load-display-options-default-button"></div></div></div></div>',
       '#attributes' => ['class' => ['edit-field-display-options']],
       '#default_value' => isset($items[$delta]->displayOptions) ? $items[$delta]->displayOptions : "",
     ];  
