@@ -156,7 +156,13 @@
         let series = [];
 
         //Try and join all stubs to individual series
-        stub.forEach(element => {        
+        let stubsToCheck = [];
+        if(!Array.isArray(stub))
+            stubsToCheck = [ stub ];
+        else 
+            stubsToCheck = stub.splice(0);
+
+        stubsToCheck.forEach(element => {        
             let partialSeries = metadata["VALUES[fo]"][element];
             let semiSeries = series.slice();
             series = [];
