@@ -1,0 +1,23 @@
+<h1>Hello world</h1>
+
+{% for key, value in items %}
+
+
+    <p>test</p>
+    <div class="pxPlaceholder"></div>
+
+    <!-- Convert data to JSON to be used in JS file -->
+    <script>
+        var pxData = {};
+        pxData.title = '{{ items[key].content["#title"] | raw }}';
+        pxData.subtitle = '{{ items[key].content["#subtitle"] | raw }}';
+        pxData.displayType = {{ items[key].content["#displayType"] | raw }};
+        pxData.displayMode = {{ items[key].content["#displayMode"] | raw }};
+        pxData.savedResultUrl = '{{ items[key].content["#savedResultUrl"] | raw }}';
+        pxData.savedResultText = {{ items[key].content["#savedResultText"] | raw }};
+        pxData.seriesNames = '{{ items[key].content["#seriesNames"] | raw }}';
+        pxData.seriesColor = '{{ items[key].content["#seriesColor"] | raw }}';
+        pxData.displayOptions = {{ items[key].content["#displayOptions"] | default('{}') | raw  }};
+    </script>
+
+{% endfor %}

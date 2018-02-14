@@ -1,0 +1,8 @@
+name: PX Web
+type: module
+description: Module for PX web for Hagstovan
+core: 8.x
+package: HAGSTOVAN
+
+dependencies:
+  - field

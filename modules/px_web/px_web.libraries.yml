@@ -1,0 +1,6 @@
+doaction:
+  version: 1.x
+  js:
+    doaction.js: {}
+    px.min.js: {}
+    underscore-min.js: {}
