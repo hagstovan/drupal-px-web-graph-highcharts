@@ -1,7 +1,7 @@
 # PXWeb
----
+
 ## Copy the modules/px_web to the installation
----
+
 ## Set up the theme
 
 Edit the SOMETEMPLATE.libraries.yml
