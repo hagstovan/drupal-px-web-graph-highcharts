@@ -84,21 +84,7 @@
                     enabled: false,
                 },
                 dataLabels: {
-                    enabled: true,
-                    color: "#000",
-                    useHTML: true,
-                    crop: false,
-                    overflow: false,
-                    formatter: function() {
-                        var last  = this.series.data[this.series.data.length - 1];
-                        if (this.point.category === last.category  && this.point.y === last.y) {
-                            return ('<div class="myDataLabelTooltip"><span class="datetext">' +  Highcharts.dateFormat("%e. %b &apos;%y",this.point.x + 43200000) + "</span><br />" +  Highcharts.numberFormat(this.point.y,0)  + "</div>");
-                        }
-                        else 
-                        {
-                            return
-                        };
-                    }
+                    enabled: false
                 }
             },
             series: {
@@ -301,7 +287,7 @@
         console.log(processedData);
 
         let highchartsOptions = defaultDisplayOptions;
-        if(displayOptions.length > 0) {
+        if(displayOptions != null && Object.keys(displayOptions).length > 0) {
             highchartsOptions = displayOptions;
         }
 
