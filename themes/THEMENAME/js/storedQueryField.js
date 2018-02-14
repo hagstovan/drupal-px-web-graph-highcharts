@@ -1,6 +1,7 @@
 (function ($, Drupal) {
 
-    let defaultDisplayOptions = {
+    let defaultDisplayOptions = 
+    {
         credits: {
             enabled: false
         },
@@ -12,7 +13,7 @@
             marginRight: 20
         },
         rangeSelector: {
-            enabled: true
+            enabled: false
         },
         exporting: {
             enabled: false
@@ -41,7 +42,7 @@
             },
             tickInterval: 2629746000,
             min: 0,
-            max: 1,
+            max: 0,
             type: "datetime",
             labels: {
                 style: {
@@ -91,12 +92,15 @@
                     formatter: function() {
                         var last  = this.series.data[this.series.data.length - 1];
                         if (this.point.category === last.category  && this.point.y === last.y) {
-                            return ('<div class="MyDataLabelTooltip"><span class="datetext">' +  Highcharts.dateFormat("%e. %b &apos;%y",this.point.x + 43200000) + "</span><br />" +  Highcharts.numberFormat(this.point.y,0)  + "</div>");
+                            return ('<div class="myDataLabelTooltip"><span class="datetext">' +  Highcharts.dateFormat("%e. %b &apos;%y",this.point.x + 43200000) + "</span><br />" +  Highcharts.numberFormat(this.point.y,0)  + "</div>");
                         }
-                        else {return};
-                        }
+                        else 
+                        {
+                            return
+                        };
                     }
-                },
+                }
+            },
             series: {
                 showInNavigator: true
             }
@@ -130,6 +134,14 @@
         let savedResultText = pxData["savedResultText"];
         console.log(savedResultText);   
 
+        if(!savedResultText["data"] || !savedResultText["metadata"])
+        {
+            pxPlaceholder.append("<h2>Kann ikki vísa. Onki 'úrslit' funni</h2>");
+            pxPlaceholder.append("<p>Fyri at loysa hendan trupulleikan, kanst tú fara inn á Edit og trýst á 'Innles ella endurinnles dáta'</p>");
+            return;
+        }
+        
+
         console.log("-= Lookup displayOptions =-");
         let displayOptions = pxData["displayOptions"];
         console.log(displayOptions);   
@@ -140,10 +152,27 @@
         //Find time values (X-Axis)
         console.log("-= Find time values (X-Axis) =-");
         let timeVal = metadata["TIMEVAL[fo]"];
+        let headings = metadata["HEADING[fo]"]["TABLE"];
+        let values = metadata["VALUES[fo]"];
+
         let timeValueTypes = Object.keys(timeVal); 
         let timeValueType = timeValueTypes[0];
-        let timeValues = metadata["VALUES[fo]"][timeValueType];
 
+        let firstHeading = headings;
+        if(Array.isArray(headings))
+            firstHeading = headings[0];
+
+        if(timeValueType != firstHeading) {
+            timeValueType = firstHeading;
+        }
+            
+        let timeValues = values[timeValueType];
+
+        //We need to interate headings and check values for each her
+
+        
+        console.log(headings);
+        console.log(values);
         console.log(timeVal);
         console.log(timeValueTypes);
         console.log(timeValueType);
@@ -196,10 +225,20 @@
 
         //Find Colors
         console.log("-= Find Colors =-");
-        let colors =  [];
+        let colors =  ["#7fb800", "#00a6ed", "#f7b538", "#fb6107", '#9b1212', '#306b34', '#012169', "#7fb800", "#00a6ed", "#f7b538", "#fb6107", '#9b1212', '#306b34', '#012169'];
         if(pxData["seriesColor"]) {
             var arrayOfColors = pxData["seriesColor"].split(",");
-            colors = arrayOfColors;
+            for(var i  = 0; i< arrayOfColors.length; i++) {
+                if(arrayOfColors[i].length > 0)
+                {
+                    if(colors.length <= i) {
+                        colors.push(arrayOfColors[i]);
+                    } else {
+                        colors[i] = arrayOfColors[i];
+                    }
+                }
+                    
+            }
         }
         console.log(colors);
 
@@ -214,6 +253,7 @@
 
         //Process Data
         console.log("-= Process Data =-");
+        let isCategory = false;
         let processedData = [];
         for(var j = 0; j < series.length; j++) {
             let currentSeries = series[j];
@@ -243,12 +283,17 @@
                 let time = timeValue.replace("M","-");
                 let date = Date.parse(time);
 
-                if(min > date)
-                    min = date;
-                if(date > max)
-                    max = date;
+                if(!isNaN(date)) {
+                    if(min > date)
+                        min = date;
+                    if(date > max)
+                        max = date;
 
-                serie.data.push([date, parseFloat(data[i + (timeValues.length * j)])]);
+                    serie.data.push([date, parseFloat(data[i + (timeValues.length * j)])]);
+                } else {
+                    isCategory = true;
+                    serie.data.push([timeValue, parseFloat(data[i + (timeValues.length * j)])]);
+                }
             }
 
             processedData.push(serie)
@@ -261,11 +306,25 @@
         }
 
         //Overwrite display options
-        highchartsOptions.xAxis.min = min;
-        highchartsOptions.xAxis.max = max;
+        if(highchartsOptions.xAxis.min == 0)
+            highchartsOptions.xAxis.min = min;
+
+        if(highchartsOptions.xAxis.max == 0)
+            highchartsOptions.xAxis.max = max;
+
         highchartsOptions.title.text = pxData.title;
         highchartsOptions.subtitle.text = pxData.subtitle;
         highchartsOptions.series = processedData;
+        
+
+        if(isCategory) {       
+            highchartsOptions.xAxis.min= null;
+            highchartsOptions.xAxis.max= null;
+            highchartsOptions.xAxis.type= "linear";
+            highchartsOptions.navigator.enabled = false;
+            highchartsOptions.xAxis.categories = timeValues;
+            highchartsOptions.xAxis.tickInterval = null;
+        }
 
         pxPlaceholder.highcharts(highchartsOptions);
     }
@@ -276,7 +335,7 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var px = new Px(xhr.responseText);
-                    pxData["savedResultUrl"] = px;
+                    pxData["savedResultText"] = px;
                     renderPXData(pxData);
                 }
             };
