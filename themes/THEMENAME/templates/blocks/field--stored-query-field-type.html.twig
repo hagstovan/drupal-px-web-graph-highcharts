@@ -7,14 +7,21 @@
     var pxData = {};
     pxData.title = '{{ items[key].content["#title"] | raw }}';
     pxData.subtitle = '{{ items[key].content["#subtitle"] | raw }}';
+    pxData.yAxisName = '{{ items[key].content["#yAxisName"] | raw }}';
+    pxData.comment = '{{ items[key].content["#comment"] | raw }}';
     pxData.displayType = {{ items[key].content["#displayType"] | raw }};
     pxData.displayMode = {{ items[key].content["#displayMode"] | raw }};
     pxData.savedResultUrl = '{{ items[key].content["#savedResultUrl"] | raw }}';
-    pxData.savedResultText = {{ items[key].content["#savedResultText"] | raw }};
+    pxData.savedResultText = {{ items[key].content["#savedResultText"] | default('{}') | raw }};
     pxData.seriesNames = '{{ items[key].content["#seriesNames"] | raw }}';
     pxData.seriesColor = '{{ items[key].content["#seriesColor"] | raw }}';
     pxData.displayOptions = {{ items[key].content["#displayOptions"] | default('{}') | raw  }};
 </script>
+
+{% if items[key].content["#comment"] is not empty %}
+    <p><strong>viðm.:</strong> {{ items[key].content["#comment"] }}</p>    
+{% endif %}
+
 
 {% endfor %}
 

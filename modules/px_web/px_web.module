@@ -26,11 +26,8 @@ function px_web_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-/*
-
-
+ /*
 function px_web_theme() {
-
   return [
     'px_web' => [
       'render element' => 'children',
