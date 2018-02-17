@@ -1,21 +1,28 @@
 {% for key, value in items %}
 
-<div class="pxPlaceholder"></div>
+<div class={{ value.content["#storageName"] }}></div>
 
 <!-- Convert data to JSON to be used in JS file -->
 <script>
-    var pxData = {};
-    pxData.title = '{{ items[key].content["#title"] | raw }}';
-    pxData.subtitle = '{{ items[key].content["#subtitle"] | raw }}';
-    pxData.yAxisName = '{{ items[key].content["#yAxisName"] | raw }}';
-    pxData.comment = '{{ items[key].content["#comment"] | raw }}';
-    pxData.displayType = {{ items[key].content["#displayType"] | raw }};
-    pxData.displayMode = {{ items[key].content["#displayMode"] | raw }};
-    pxData.savedResultUrl = '{{ items[key].content["#savedResultUrl"] | raw }}';
-    pxData.savedResultText = {{ items[key].content["#savedResultText"] | default('{}') | raw }};
-    pxData.seriesNames = '{{ items[key].content["#seriesNames"] | raw }}';
-    pxData.seriesColor = '{{ items[key].content["#seriesColor"] | raw }}';
-    pxData.displayOptions = {{ items[key].content["#displayOptions"] | default('{}') | raw  }};
+
+if(!pxDatas)
+    var pxDatas = [];
+
+pxDatas.push({
+    id : '{{ items[key].content["#id"] | raw }}',
+    storageName : '{{ items[key].content["#storageName"] | raw }}',
+    title : '{{ items[key].content["#title"] | raw }}',
+    subtitle : '{{ items[key].content["#subtitle"] | raw }}',
+    yAxisName : '{{ items[key].content["#yAxisName"] | raw }}',
+    comment : '{{ items[key].content["#comment"] | raw }}',
+    displayType : {{ items[key].content["#displayType"] | raw }},
+    displayMode : {{ items[key].content["#displayMode"] | raw }},
+    savedResultUrl : '{{ items[key].content["#savedResultUrl"] | raw }}',
+    savedResultText : {{ items[key].content["#savedResultText"] | default('{}') | raw }},
+    seriesNames : '{{ items[key].content["#seriesNames"] | raw }}',
+    seriesColor : '{{ items[key].content["#seriesColor"] | raw }}',
+    displayOptions : {{ items[key].content["#displayOptions"] | default('{}') | raw  }},
+});
 </script>
 
 {% if items[key].content["#comment"] is not empty %}

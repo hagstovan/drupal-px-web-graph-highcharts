@@ -21,11 +21,20 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class StoredQueryFormatterType extends FormatterBase {
 
+  public static $currentId;
+
+  public static function getNextId() {
+    StoredQueryFormatterType::$currentId += 1;
+      return StoredQueryFormatterType::$currentId;
+  }
+
+
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
 
+    
     $elements = array();
 
     foreach ($items as $delta => $item) {
@@ -35,6 +44,10 @@ class StoredQueryFormatterType extends FormatterBase {
       $markup .= "<strong>savedResultText:</strong> <code>" . $item->savedResultText . "</code><br/>";
       $markup .= "<strong>displayOptions:</strong> " . $item->displayOptions . "<br/>";
 
+
+      $id = StoredQueryFormatterType::getNextId();
+
+      $storageName = "pxPlaceholder".$id;
       $elements[$delta] = array(
         '#type' => 'markup',
         '#markup' => $markup,
@@ -50,13 +63,13 @@ class StoredQueryFormatterType extends FormatterBase {
         '#displayOptions' => $item->displayOptions,
         '#seriesNames' => $item->seriesNames,
         '#seriesColor' => $item->seriesColor,
+        "#id" => $id,
+        "#storageName" => $storageName
       );
     }
 
     return $elements;
   }
-
-
 
 
   /**

@@ -5,7 +5,6 @@ namespace Drupal\px_web\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Plugin implementation of the 'stored_query_widget_type' widget.
  *
@@ -20,12 +19,42 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class StoredQueryWidgetType extends WidgetBase {
 
+    private $id = 0;
+    public static $currentId;
+
+    public static function getNextId() {
+        StoredQueryWidgetType::$currentId += 1;
+        return StoredQueryWidgetType::$currentId;
+    }
   /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     // If cardinality is 1, ensure a label is output for the field by wrapping
     // it in a details element.
+      if($this->id == 0){
+          $this->id  = StoredQueryWidgetType::getNextId();
+      }
+
+    $wrapperClass = 'px-web-'.$this->id;
+    $element += array(
+        '#attributes' => ['class' => [$wrapperClass]],
+      '#attached' => [
+
+        'drupalSettings' => [
+          'wrapperClass' => $wrapperClass
+        ],
+        'library' => [
+            'px_web/doaction',
+            'px_web/px.min',
+            'px_web/underscore-min'
+        ],
+      ],
+      // 'settings' => {
+      //   'setting1' => 'value1'
+      // }
+    );
+
     if ($this->fieldDefinition->getFieldStorageDefinition()->getCardinality() == 1) {
       $element += array(
         '#type' => 'fieldset',
@@ -74,13 +103,6 @@ class StoredQueryWidgetType extends WidgetBase {
       '#type' => 'textfield',
       '#title' => 'Fyrispurningur úr hagtalsgrunni (PX-fíluslag)',
       '#suffix' => '<div class="load-saved-result-button"></div>',
-      '#attached' => [
-        'library' => [
-            'px_web/doaction',
-            'px_web/px.min',
-            'px_web/underscore-min'
-        ],
-      ],
       '#attributes' => ['class' => ['edit-field-saved-result']],
       '#default_value' => isset($items[$delta]->savedResultUrl) ? $items[$delta]->savedResultUrl : "",
     ];

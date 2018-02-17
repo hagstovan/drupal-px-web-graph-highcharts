@@ -1,5 +1,10 @@
 # PXWeb
 
+##Modular Requirements
+- entity_reference_revisions (https://www.drupal.org/project/entity_reference_revisions)
+- paragraphs (https://www.drupal.org/project/paragraphs)
+
+##Installation
 ## Copy the modules/px_web to the installation
 
 copy the folder modules\px_web to your DRUPALINSTALLATION\modules
@@ -18,3 +23,5 @@ global-js:
 Add to the bottom of before the body templates\layout\html.html.twig
 <script src="https://hagvarp.hagstova.fo/lib/js/highstock-release/highstock.js"></script>
 <script src="https://hagvarp.hagstova.fo/lib/js/highstock-release/modules/exporting.js"></script>
+
+##How to set up a paragraphs

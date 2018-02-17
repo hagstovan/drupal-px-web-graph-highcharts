@@ -1,5 +1,7 @@
 (function ($, Drupal) {
 
+    let isDebug = true;
+
     let defaultDisplayOptions = 
     {
         credits: {
@@ -94,31 +96,37 @@
     };
 
     $(function() {
-        if(pxData === undefined) {
+
+        if(pxDatas === undefined) {
             alert("NO PX DATA FOUND ON PAGE");
             return;
         }
 
-        if(pxData["displayMode"] == 0) {
-            loadPXDataLive(pxData["savedResultUrl"]);
-        } else {
-            renderPXData(pxData);
-        }
+        pxDatas.forEach(pxData => {
+            if(pxData["displayMode"] == 0) {
+                loadPXDataLive(pxData["savedResultUrl"]);
+            } else {
+                renderPXData(pxData);
+            }
+        });
+        
     });
 
     var renderPXData = function(pxData) {
-        console.log("-= renderPXData =-");
-        console.log(pxData);   
+        log("-= renderPXData =-");
+        log(pxData);   
+        
+        let storageName = pxData["storageName"];
 
         //Find element
-        let pxPlaceholder = $(".pxPlaceholder");
+        let pxPlaceholder = $("." + storageName);
 
         // ------------------------------------------- //
         //                LOOKUP VALUES                //
         // ------------------------------------------- //
-        console.log("-= Lookup SavedResultText =-");
+        log("-= Lookup SavedResultText =-");
         let savedResultText = pxData["savedResultText"];
-        console.log(savedResultText);   
+        log(savedResultText);   
 
         if(!savedResultText["data"] || !savedResultText["metadata"])
         {
@@ -128,15 +136,15 @@
         }
         
 
-        console.log("-= Lookup displayOptions =-");
+        log("-= Lookup displayOptions =-");
         let displayOptions = pxData["displayOptions"];
-        console.log(displayOptions);   
+        log(displayOptions);   
 
         let data = savedResultText["data"];
         let metadata = savedResultText["metadata"];
 
         //Find time values (X-Axis)
-        console.log("-= Find time values (X-Axis) =-");
+        log("-= Find time values (X-Axis) =-");
         let timeVal = metadata["TIMEVAL[fo]"];
         let headings = metadata["HEADING[fo]"]["TABLE"];
         let values = metadata["VALUES[fo]"];
@@ -157,15 +165,15 @@
         //We need to interate headings and check values for each her
 
         
-        console.log(headings);
-        console.log(values);
-        console.log(timeVal);
-        console.log(timeValueTypes);
-        console.log(timeValueType);
-        console.log(timeValues);
+        log(headings);
+        log(values);
+        log(timeVal);
+        log(timeValueTypes);
+        log(timeValueType);
+        log(timeValues);
 
         //Find Series (groups)  
-        console.log("-= Find Series (groups) =-");
+        log("-= Find Series (groups) =-");
         let stub = metadata["STUB[fo]"]["TABLE"];
 
         let series = [];
@@ -202,15 +210,15 @@
             }
         });
 
-        console.log(stub);
-        console.log(series);
+        log(stub);
+        log(series);
 
         //Find values
         let min = 9999999999999;
         let max = 0;
 
         //Find Colors
-        console.log("-= Find Colors =-");
+        log("-= Find Colors =-");
         let colors =  ["#7fb800", "#00a6ed", "#f7b538", "#fb6107", '#9b1212', '#306b34', '#012169', "#7fb800", "#00a6ed", "#f7b538", "#fb6107", '#9b1212', '#306b34', '#012169'];
         if(pxData["seriesColor"]) {
             var arrayOfColors = pxData["seriesColor"].split(",");
@@ -226,19 +234,19 @@
                     
             }
         }
-        console.log(colors);
+        log(colors);
 
         //Find Series Names
-        console.log("-= Find Series Names =-");
+        log("-= Find Series Names =-");
         let seriesNames = [];
         if(pxData["seriesNames"]) {
             var arrayOfSeriesNames = pxData["seriesNames"].split(",");
             seriesNames = arrayOfSeriesNames;
         }
-        console.log(seriesNames);
+        log(seriesNames);
 
         //Process Data
-        console.log("-= Process Data =-");
+        log("-= Process Data =-");
         let isCategory = false;
         let processedData = [];
         for(var j = 0; j < series.length; j++) {
@@ -284,7 +292,7 @@
 
             processedData.push(serie)
         }
-        console.log(processedData);
+        log(processedData);
 
         let highchartsOptions = defaultDisplayOptions;
         if(displayOptions != null && Object.keys(displayOptions).length > 0) {
@@ -332,5 +340,10 @@
             xhr.overrideMimeType('text/xml; charset=iso-8859-15');
             xhr.send();
         }
+    }
+
+    var log = function(text) {
+        if(isDebug)
+        console.log(text);
     }
 })(window.jQuery, window.Drupal);

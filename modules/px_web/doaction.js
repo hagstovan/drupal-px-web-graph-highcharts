@@ -1,6 +1,7 @@
 (function($) {
     'use strict';
 
+    let isDebug = true;
     let defaultDisplayOptions = 
     {
         credits: {
@@ -99,15 +100,40 @@
     };
 
     Drupal.behaviors.px_web_action = {
-        attach(context, settings) {
+        attach(context, settings) {            
             
+            log(context);
+            log(settings);
             //Lookup Elements
-            let $base =  $(context);
-            //Display options
-            var displayOptionsLabel = $base.find(".display-options-label");
-            var displayOptionsWrapper = $base.find(".display-options-wrapper");
-            displayOptionsWrapper.css("display","none");
+            log("--- Lookup Elements ---");
 
+            //let $base =  $(context);
+            let $elements = $(context).find(".field--type-stored-query-field-type");
+
+            log($elements);
+            $.each($elements,function(index, element) {
+                let $base = $(element);
+            let displayOptionsLabel = $base.find(".display-options-label");
+            let displayOptionsWrapper = $base.find(".display-options-wrapper");
+            let displayOptionsField = $base.find(".edit-field-display-options");
+            let savedResultText = $base.find(".edit-field-saved-result-text");
+            let savedResultElement = $base.find(".edit-field-saved-result");
+            let displayOptionsDefaultsButton = savedResultElement.closest('div').parent().find('.load-display-options-default-button');            
+            let loadPXDataFromUrlAddressButton = savedResultElement.closest('div').parent().find('.load-saved-result-button');            
+
+            log($base);
+            log(displayOptionsLabel);
+            log(displayOptionsWrapper);
+            log(displayOptionsField);
+            log(savedResultText);
+            log(savedResultElement);
+            log(displayOptionsDefaultsButton);
+            log(loadPXDataFromUrlAddressButton);
+
+            //Update elements
+
+            //Update displayOptionsWrapper
+            displayOptionsWrapper.css("display","none");
             displayOptionsLabel.click(function() {
                 if(displayOptionsWrapper.css("display") == "none") {
                     displayOptionsWrapper.css("display","block");
@@ -116,25 +142,17 @@
                 }
             });
 
-            
-            //
-            var savedResultText = $base.find(".edit-field-saved-result-text");
-            var savedResultElement = $base.find(".edit-field-saved-result");
-            let displayOptionsField = $base.find(".edit-field-display-options");
-            
-            
-            var displayOptionsDefaultsButton = savedResultElement.closest('div').parent().find('.load-display-options-default-button');            
+            ////Update displayOptionsDefaultsButton
             displayOptionsDefaultsButton.html("<a target='_blank' href='#'>Innles standard uppsetan</a>");
-
             displayOptionsDefaultsButton.click((function(e) {
                 e.preventDefault();
 
                 displayOptionsField.val(JSON.stringify(defaultDisplayOptions,0,4));
             }));
-            //Build the Load Data button
-            var button = savedResultElement.closest('div').parent().find('.load-saved-result-button');            
-            button.html("<a target='_blank' href='#'>Innles ella endurinnles dáta</a>");
-            button.click(function(e) {
+
+            //Update loadPXDataFromUrlAddressButton
+            loadPXDataFromUrlAddressButton.html("<a target='_blank' href='#'>Innles ella endurinnles dáta</a>");
+            loadPXDataFromUrlAddressButton.click(function(e) {
                 e.preventDefault();
                 
                 var address = savedResultElement.val();
@@ -153,14 +171,20 @@
                     xhr.overrideMimeType('text/xml; charset=iso-8859-15');
                     xhr.send();
                 } else {
-                    console.log("NOT " + address);
+                    log("NOT " + address);
                     savedResultText.val("");
                 }
 
                 return false;
             });
 
+        });
         }
+    }
+
+    let log = function(text) {
+        if(isDebug)
+            console.log(text);
     }
 })(jQuery);
 
