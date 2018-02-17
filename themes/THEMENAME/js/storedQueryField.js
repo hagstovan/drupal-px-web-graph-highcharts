@@ -42,7 +42,7 @@
             title: {
                 enabled: false
             },
-            tickInterval: 2629746000,
+            tickInterval: 24 * 3600 * 1000 * 360,
             min: 0,
             max: 0,
             type: "datetime",
@@ -97,20 +97,19 @@
 
     $(function() {
 
-        if(pxDatas === undefined) {
-            alert("NO PX DATA FOUND ON PAGE");
-            return;
+        if(typeof pxDatas !== 'undefined') {
+            pxDatas.forEach(pxData => {
+                if(pxData["displayMode"] == 0) {
+                    loadPXDataLive(pxData);
+                } else {
+    
+                    renderPXData(pxData);
+                }
+            });
         }
-
-        pxDatas.forEach(pxData => {
-            if(pxData["displayMode"] == 0) {
-                loadPXDataLive(pxData["savedResultUrl"]);
-            } else {
-                renderPXData(pxData);
-            }
-        });
-        
     });
+
+
 
     var renderPXData = function(pxData) {
         log("-= renderPXData =-");
@@ -120,6 +119,155 @@
 
         //Find element
         let pxPlaceholder = $("." + storageName);
+        if(pxData["displayType"] == 0)
+        {
+            renderGraph(pxData, pxPlaceholder);
+        }
+        else if(pxData["displayType"] == 1)
+        {
+            pxPlaceholder.append("Render Table");
+        }
+        
+        else if(pxData["displayType"] == 2)
+        {
+            renderMap(pxData, pxPlaceholder);
+        }
+        else
+        {
+            pxPlaceholder.append("Unknown display type");
+        }
+    }
+
+    
+
+
+    var renderMap = function(pxData, pxPlaceholder) {
+
+        log("renderMap");
+
+        //Loading map from Hagvarp (should be stored locally)
+        $.getJSON('https://hagvarp.hagstova.fo/syslur7.geo.json', function (geojson) {
+           
+            var districsMapper = {
+                // "Norðstreymoyar sýsla" : 'Nordstreymoyar',
+                // "Suðurstreymoyar sýsla" : 'Sudurstreymoyar',
+                "Streymoyar sýsla" : "Streymoyar",
+                "Suðuroyar sýsla" : 'Suduroyar',
+                "Sandoyar sýsla" : 'Sandoyar',
+                "Vága sýsla" : 'Vaga',
+                "Eysturoyar sýsla" : 'Eysturoyar',
+                "Norðoya sýsla" : 'Nordoya' ,
+
+                "Norðstreymoyar øki" : 'Nordstreymoyar',
+                "Suðurstreymoyar øki" : 'Sudurstreymoyar',
+                "Suðuroyar øki" : 'Suduroyar',
+                "Sandoyar øki" : 'Sandoyar',
+                "Vága øki" : 'Vaga',
+                "Eysturoyar øki" : 'Eysturoyar',
+                "Norðoya øki" : 'Nordoya' 
+            };
+
+            let savedResultText = pxData["savedResultText"];
+            
+            if(!savedResultText["data"] || !savedResultText["metadata"])
+            {
+                pxPlaceholder.append("<h2>Kann ikki vísa. Onki 'úrslit' funni</h2>");
+                pxPlaceholder.append("<p>Fyri at loysa hendan trupulleikan, kanst tú fara inn á Edit og trýst á 'Innles ella endurinnles dáta'</p>");
+                return;
+            }
+
+            let metadata = savedResultText["metadata"];
+            //let districts = metadata["CODES"]["district of residence"];
+
+            let stub = metadata["STUB"]["TABLE"];
+            log(stub);            
+            let districts = metadata["VALUES"][stub];
+
+            let minValue = 99999999999;
+            let maxValue = 0;
+            let data = [];
+            for(var i = 0; i < districts.length; i++) {
+                let serie = [];
+
+                let mappedDisctrict = districsMapper[districts[i]];
+
+                if(mappedDisctrict !== undefined)
+                {
+                    let dataValue = savedResultText["data"][i];
+
+                    if(minValue > dataValue)
+                        minValue = dataValue;
+                    if(maxValue < dataValue)
+                        maxValue = dataValue;
+
+                    data.push([mappedDisctrict, dataValue]);
+                } else {
+                    log("Can not map disctrict " + districts[i]);
+                }
+            }
+
+            //Render the Map
+            pxPlaceholder.highcharts('Map', {
+                title: {
+                      text: ''
+                  },
+                credits: {
+                    enabled: false
+                  },
+                chart: {
+                    backgroundColor: "rgba(255, 255, 255, 0)",
+                },
+                exporting: {
+                    enabled: false
+                },                              
+                  legend: {
+                    enabled: false,
+                      title: {
+                          text: "Arbeiðsfjøldin (%) í mun til fólkatalið"
+                      }
+                    },
+                colorAxis: {
+                        min: minValue,
+                        max: maxValue,
+                      type: 'linear',
+                      minColor: "#ffffff",
+                      maxColor: "#002d62"//"#f7b538"
+                  },
+                  tooltip: {
+                          valueDecimals: 1,
+                          valueSuffix: '',
+                  },
+                plotOptions: {
+                    map: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.value:.1f}',
+                            className: 'MyDataLabelTooltip',
+                            style: { fontSize: '1.6em !important' }                                
+                        }
+                    }
+                },                                
+                  series: [{
+                    data: data,
+                      mapData: geojson,
+                      joinBy: ['name', 0],
+                      keys: ['name', 'value'],
+                      name: 'Sýsla',
+                      states: {
+                          hover: {
+                              color: '#BADA55'
+                          }
+                      }
+                  }]
+                 
+              });
+        });
+    }
+
+        
+
+
+    var renderGraph = function(pxData, pxPlaceholder) {
 
         // ------------------------------------------- //
         //                LOOKUP VALUES                //
@@ -163,7 +311,6 @@
         let timeValues = values[timeValueType];
 
         //We need to interate headings and check values for each her
-
         
         log(headings);
         log(values);
@@ -174,7 +321,10 @@
 
         //Find Series (groups)  
         log("-= Find Series (groups) =-");
-        let stub = metadata["STUB[fo]"]["TABLE"];
+        let stub = null;
+        
+        if(metadata["STUB[fo]"] != null)
+            stub = metadata["STUB[fo]"]["TABLE"];
 
         let series = [];
 
@@ -249,6 +399,8 @@
         log("-= Process Data =-");
         let isCategory = false;
         let processedData = [];
+        let tickIntervalToUse = defaultDisplayOptions.xAxis.tickInterval;
+
         for(var j = 0; j < series.length; j++) {
             let currentSeries = series[j];
             let serie = {
@@ -272,9 +424,17 @@
             else 
                 serie.color = "#002d62";
 
+            
+
             for(var i = 0; i < timeValues.length; i++) {
                 let timeValue = timeValues[i];
-                let time = timeValue.replace("M","-");
+                
+                let time = timeValue;
+                if(timeValue.indexOf("M") > -1) {
+                    time = timeValue.replace("M","-");
+                    tickIntervalToUse = 24 * 3600 * 1000 * 25;
+                }
+                
                 let date = Date.parse(time);
 
                 if(!isNaN(date)) {
@@ -309,6 +469,9 @@
         highchartsOptions.title.text = pxData.title;
         highchartsOptions.subtitle.text = pxData.subtitle;
         highchartsOptions.series = processedData;
+        log(tickIntervalToUse);
+        log(highchartsOptions.xAxis.tickInterval);
+        highchartsOptions.xAxis.tickInterval = tickIntervalToUse;
         
         if(pxData["yAxisName"])
             highchartsOptions.yAxis.title.text = pxData["yAxisName"];
@@ -325,7 +488,9 @@
         pxPlaceholder.highcharts(highchartsOptions);
     }
 
-    var loadPXDataLive = function(address) {   
+    var loadPXDataLive = function(pxData) { 
+        
+        let address = pxData["savedResultUrl"]
         if(address) {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
