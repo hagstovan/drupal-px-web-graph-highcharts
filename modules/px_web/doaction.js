@@ -1,7 +1,7 @@
 (function($) {
     'use strict';
 
-    let isDebug = true;
+    let isDebug = false;
     let defaultDisplayOptions = {
         credits: {
             enabled: false

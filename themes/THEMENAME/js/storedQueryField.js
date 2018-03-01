@@ -1,6 +1,6 @@
 (function ($, Drupal) {
 
-    let isDebug = true;
+    let isDebug = false;
 
     let defaultDisplayOptions = {
         credits: {
