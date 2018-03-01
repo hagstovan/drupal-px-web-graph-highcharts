@@ -2,8 +2,7 @@
     'use strict';
 
     let isDebug = true;
-    let defaultDisplayOptions = 
-    {
+    let defaultDisplayOptions = {
         credits: {
             enabled: false
         },
@@ -42,7 +41,7 @@
             title: {
                 enabled: false
             },
-            tickInterval: 2629746000,
+            tickInterval: 24 * 3600 * 1000 * 360,
             min: 0,
             max: 0,
             type: "datetime",
@@ -55,7 +54,7 @@
         },
         yAxis: {
             title: {
-                text: "Test",
+                text: "",
                 style: {
                     color: "#000",
                     fontWeight: "normal",
@@ -86,17 +85,67 @@
                     enabled: false,
                 },
                 dataLabels: {
-                    enabled: true,
-                    color: "#000",
-                    useHTML: true,
-                    crop: false,
-                    overflow: false
+                    enabled: false
                 }
             },
             series: {
                 showInNavigator: true
             }
         }
+    };
+
+    let defaultMapDisplayOptions = {
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: ''
+        },
+        credits: {
+            enabled: false
+        },
+        chart: {
+            backgroundColor: "rgba(255, 255, 255, 0)",
+        },
+        exporting: {
+            enabled: false
+        },
+        legend: {
+            enabled: false,
+        },
+        colorAxis: {
+            min: 0,
+            max: 100,
+            type: 'linear',
+            minColor: "#FFFFFF",
+            maxColor: "#306b34"
+        },
+        tooltip: {
+            valueDecimals: 1,
+            valueSuffix: '',
+        },
+        plotOptions: {
+            map: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.value:.1f}',
+                    className: 'MyDataLabelTooltip',
+                    style: { fontSize: '1.6em !important' }
+                }
+            }
+        },
+        series: [{
+            data: null,
+            mapData: null,
+            joinBy: ['label', 0],
+            keys: ['label', 'value'],
+            name: 'Sýsla',
+            states: {
+                hover: {
+                    color: '#BADA55'
+                }
+            }
+        }]
     };
 
     Drupal.behaviors.px_web_action = {
@@ -143,11 +192,16 @@
             });
 
             ////Update displayOptionsDefaultsButton
-            displayOptionsDefaultsButton.html("<a target='_blank' href='#'>Innles standard uppsetan</a>");
-            displayOptionsDefaultsButton.click((function(e) {
+            displayOptionsDefaultsButton.html("<a class='chartDisplayOptionsButton' target='_blank' href='#'>Innles standard <strong>graf</strong> uppsetan</a><br/><a class='mapDisplayOptionsButton' target='_blank' href='#'>Innles standard <strong>landakort</strong> uppsetan</a>");
+            displayOptionsDefaultsButton.find(".chartDisplayOptionsButton").click((function(e) {
                 e.preventDefault();
 
                 displayOptionsField.val(JSON.stringify(defaultDisplayOptions,0,4));
+            }));
+            displayOptionsDefaultsButton.find(".mapDisplayOptionsButton").click((function(e) {
+                e.preventDefault();
+
+                displayOptionsField.val(JSON.stringify(defaultMapDisplayOptions,0,4));
             }));
 
             //Update loadPXDataFromUrlAddressButton
@@ -158,6 +212,7 @@
                 var address = savedResultElement.val();
                 
                 if(address) {
+
                     var xhr = new XMLHttpRequest();
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -170,6 +225,7 @@
                     xhr.open('GET', address);
                     xhr.overrideMimeType('text/xml; charset=iso-8859-15');
                     xhr.send();
+
                 } else {
                     log("NOT " + address);
                     savedResultText.val("");
