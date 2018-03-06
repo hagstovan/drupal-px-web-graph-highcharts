@@ -1,4 +1,4 @@
-# PXWeb
+# PX Web Graph (Highcharts)
 
 # Modular Requirements
 - entity_reference_revisions (https://www.drupal.org/project/entity_reference_revisions)
