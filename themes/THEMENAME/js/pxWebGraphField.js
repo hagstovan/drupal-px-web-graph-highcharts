@@ -352,10 +352,10 @@
         log("-= Find Series (groups) =-");
         let stub = null;
 
-        if (metadata["STUB[fo]"] != null)
+        if (metadata["STUB[fo]"])
             stub = metadata["STUB[fo]"]["TABLE"];
-        else(metadata["STUB"] != null)
-            stub = metadata["STUB[fo]"]["TABLE"];
+        else if(metadata["STUB"])
+            stub = metadata["STUB"]["TABLE"];
 
         let series = [];
 
