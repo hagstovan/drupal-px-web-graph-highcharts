@@ -21,15 +21,18 @@ global-js:
 	....
 	
 Add to the bottom of before the body templates\layout\html.html.twig
+```
 <script src="https://hagvarp.hagstova.fo/lib/js/highstock-release/highstock.js"></script>
 <script src="https://hagvarp.hagstova.fo/lib/js/highstock-release/modules/exporting.js"></script>
 
 <script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/map.js"></script>   
 <script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/data.js"></script>
 <script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/exporting.js"></script>
+```
 
-Add the block:
-copy file "themes\THEMENAME\templates\blocks\field--px-web-graph-field-type.html" to your theme themse\YOURTHEMENAME\templates\blocks\ folder 
+Add the block template:
+
+copy file "themes\THEMENAME\templates\blocks\field--px-web-graph-field-type.html" to your themes\YOURTHEMENAME\templates\blocks\ folder 
 
 # How to set up a paragraphs
 Pre: Install paragraphs and entity reference revisions
