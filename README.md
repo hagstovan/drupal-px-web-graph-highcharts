@@ -12,6 +12,8 @@ copy the folder modules\px_web_graph to your DRUPALINSTALLATION\modules
 ## Set up the theme
 
 Edit the SOMETEMPLATE.libraries.yml
+
+```
 global-js:
   js:
     ...
@@ -19,7 +21,8 @@ global-js:
     js/px.min.js: {}   
     js/pxWebGraphField.js: {}
 	....
-	
+```
+
 Add to the bottom of before the body templates\layout\html.html.twig
 ```
 <script src="https://hagvarp.hagstova.fo/lib/js/highstock-release/highstock.js"></script>
