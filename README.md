@@ -5,9 +5,9 @@
 - paragraphs (https://www.drupal.org/project/paragraphs)
 
 # Installation
-## Copy the modules/px_web to the installation
+## Copy the modules/px_web_graph to the installation
 
-copy the folder modules\px_web to your DRUPALINSTALLATION\modules
+copy the folder modules\px_web_graph to your DRUPALINSTALLATION\modules
 
 ## Set up the theme
 
