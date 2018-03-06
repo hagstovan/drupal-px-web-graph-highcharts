@@ -1,6 +1,6 @@
-doaction:
+px_web_graph_form_actions:
   version: 1.x
   js:
-    doaction.js: {}
+    px_web_graph_form_actions.js: {}
     px.min.js: {}
     underscore-min.js: {}

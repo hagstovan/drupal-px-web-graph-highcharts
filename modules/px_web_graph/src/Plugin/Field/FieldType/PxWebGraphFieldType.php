@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\px_web\Plugin\Field\FieldType;
+namespace Drupal\px_web_graph\Plugin\Field\FieldType;
 
 use Drupal\Component\Utility\Random;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -11,17 +11,17 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
 
 /**
- * Plugin implementation of the 'stored_query_field_type' field type.
+ * Plugin implementation of the 'px_web_graph_field_type' field type.
  *
  * @FieldType(
- *   id = "stored_query_field_type",
- *   label = @Translation("Stored query field type"),
- *   description = @Translation("This is a store query from px"),
- *   default_widget = "stored_query_widget_type",
- *   default_formatter = "stored_query_formatter_type"
+ *   id = "px_web_graph_field_type",
+ *   label = @Translation("PX Web graph"),
+ *   description = @Translation("This is a PX Web Graph (Highcharts)"),
+ *   default_widget = "px_web_graph_widget_type",
+ *   default_formatter = "px_web_graph_formatter_type"
  * )
  */
-class StoredQueryFieldType extends FieldItemBase {
+class PxWebGraphFieldType extends FieldItemBase {
   /**
    * {@inheritdoc}
    */

@@ -17,7 +17,7 @@ class LoadTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['px_web'];
+  public static $modules = ['px_web_graph'];
 
   /**
    * A user with permission to administer site configuration.

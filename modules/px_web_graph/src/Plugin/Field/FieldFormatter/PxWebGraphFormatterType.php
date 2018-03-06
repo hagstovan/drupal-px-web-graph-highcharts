@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\px_web\Plugin\Field\FieldFormatter;
+namespace Drupal\px_web_graph\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemInterface;
@@ -9,23 +9,23 @@ use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'stored_query_formatter_type' formatter.
+ * Plugin implementation of the 'px_web_graph_formatter_type' formatter.
  *
  * @FieldFormatter(
- *   id = "stored_query_formatter_type",
- *   label = @Translation("Stored query formatter type"),
+ *   id = "px_web_graph_formatter_type",
+ *   label = @Translation("PX Web Graph (Highcharts) formatter type"),
  *   field_types = {
- *     "stored_query_field_type"
+ *     "px_web_graph_field_type"
  *   }
  * )
  */
-class StoredQueryFormatterType extends FormatterBase {
+class PxWebGraphFormatterType extends FormatterBase {
 
   public static $currentId;
 
   public static function getNextId() {
-    StoredQueryFormatterType::$currentId += 1;
-      return StoredQueryFormatterType::$currentId;
+    PxWebGraphFormatterType::$currentId += 1;
+      return PxWebGraphFormatterType::$currentId;
   }
 
 
@@ -45,7 +45,7 @@ class StoredQueryFormatterType extends FormatterBase {
       $markup .= "<strong>displayOptions:</strong> " . $item->displayOptions . "<br/>";
 
 
-      $id = StoredQueryFormatterType::getNextId();
+      $id = PxWebGraphFormatterType::getNextId();
 
       $storageName = "pxPlaceholder".$id;
       $elements[$delta] = array(

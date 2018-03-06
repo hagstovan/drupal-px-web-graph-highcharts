@@ -1,6 +1,6 @@
 (function ($, Drupal) {
 
-    let isDebug = false;
+    let isDebug = true;
 
     let defaultDisplayOptions = {
         credits: {
@@ -355,7 +355,7 @@
         if (metadata["STUB[fo]"] != null)
             stub = metadata["STUB[fo]"]["TABLE"];
         else(metadata["STUB"] != null)
-            stub = metadata["STUB"]["TABLE"];
+            stub = metadata["STUB[fo]"]["TABLE"];
 
         let series = [];
 
@@ -366,7 +366,7 @@
         else
             stubsToCheck = stub.splice(0);
 
-        stubsToCheck.forEach(element => {
+        stubsToCheck.forEach(element => {        
             let partialSeries = values[element];
             let semiSeries = series.slice();
             series = [];

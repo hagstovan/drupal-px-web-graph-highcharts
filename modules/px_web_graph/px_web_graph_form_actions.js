@@ -1,7 +1,7 @@
 (function($) {
     'use strict';
-
-    let isDebug = false;
+    
+    let isDebug = true;
     let defaultDisplayOptions = {
         credits: {
             enabled: false
@@ -157,7 +157,7 @@
             log("--- Lookup Elements ---");
 
             //let $base =  $(context);
-            let $elements = $(context).find(".field--type-stored-query-field-type");
+            let $elements = $(context).find(".field--type-px-web-graph-field-type");
 
             log($elements);
             $.each($elements,function(index, element) {

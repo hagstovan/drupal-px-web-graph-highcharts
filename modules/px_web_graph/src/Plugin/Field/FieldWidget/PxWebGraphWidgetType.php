@@ -1,30 +1,30 @@
 <?php
 
-namespace Drupal\px_web\Plugin\Field\FieldWidget;
+namespace Drupal\px_web_graph\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 /**
- * Plugin implementation of the 'stored_query_widget_type' widget.
+ * Plugin implementation of the 'px_web_graph_widget_type' widget.
  *
  * @FieldWidget(
- *   id = "stored_query_widget_type",
- *   label = @Translation("Stored query widget type"),
+ *   id = "px_web_graph_widget_type",
+ *   label = @Translation("PX Web Graph (Highcharts) widget type"),
  *   field_types = {
- *     "stored_query_field_type"
+ *     "px_web_graph_field_type"
  *   },
  *   multiple_values = TRUE
  * )
  */
-class StoredQueryWidgetType extends WidgetBase {
+class PxWebGraphWidgetType extends WidgetBase {
 
     private $id = 0;
     public static $currentId;
 
     public static function getNextId() {
-        StoredQueryWidgetType::$currentId += 1;
-        return StoredQueryWidgetType::$currentId;
+      PxWebGraphWidgetType::$currentId += 1;
+        return PxWebGraphWidgetType::$currentId;
     }
   /**
    * {@inheritdoc}
@@ -33,21 +33,20 @@ class StoredQueryWidgetType extends WidgetBase {
     // If cardinality is 1, ensure a label is output for the field by wrapping
     // it in a details element.
       if($this->id == 0){
-          $this->id  = StoredQueryWidgetType::getNextId();
+          $this->id  = PxWebGraphWidgetType::getNextId();
       }
 
     $wrapperClass = 'px-web-'.$this->id;
     $element += array(
-        '#attributes' => ['class' => [$wrapperClass]],
+      '#attributes' => ['class' => [$wrapperClass]],
       '#attached' => [
-
         'drupalSettings' => [
           'wrapperClass' => $wrapperClass
         ],
         'library' => [
-            'px_web/doaction',
-            'px_web/px.min',
-            'px_web/underscore-min'
+            'px_web_graph/px_web_graph_form_actions',
+            'px_web_graph/px.min',
+            'px_web_graph/underscore-min'
         ],
       ],
       // 'settings' => {

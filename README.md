@@ -17,7 +17,7 @@ global-js:
     ...
     js/underscore-min.js: {}   
     js/px.min.js: {}   
-    js/storedQueryField.js: {}
+    js/pxWebGraphField.js: {}
 	....
 	
 Add to the bottom of before the body templates\layout\html.html.twig
@@ -28,8 +28,11 @@ Add to the bottom of before the body templates\layout\html.html.twig
 <script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/data.js"></script>
 <script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/exporting.js"></script>
 
+Add the block:
+copy file "themes\THEMENAME\templates\blocks\field--px-web-graph-field-type.html" to your theme themse\YOURTHEMENAME\templates\blocks\ folder 
+
 # How to set up a paragraphs
-Pre: Istalla pragraphs and entity reference revisions
+Pre: Install paragraphs and entity reference revisions
 
 1. Login
 2. Click extend

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains px_web.module.
+ * Contains px_web_graph.module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function px_web_help($route_name, RouteMatchInterface $route_match) {
+function px_web_graph_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the px_web module.
-    case 'help.page.px_web':
+    // Main module help for the px_web_graph module.
+    case 'help.page.px_web_graph':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('Module for px web for Hagstovan') . '</p>';
@@ -27,9 +27,9 @@ function px_web_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_theme().
  */
  /*
-function px_web_theme() {
+function px_web_graph_theme() {
   return [
-    'px_web' => [
+    'px_web_graph' => [
       'render element' => 'children',
     ],
   ];
