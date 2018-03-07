@@ -1,0 +1,29 @@
+<div class={{ children["#storageName"] }}></div>
+
+<!-- Convert data to JSON to be used in JS file -->
+<script>
+
+if(!pxDatas)
+    var pxDatas = [];
+
+pxDatas.push(
+{
+    id : '{{ children["#id"] | raw }}',
+    storageName : '{{ children["#storageName"] | raw }}',
+    title : '{{ children["#title"] | raw }}',
+    subtitle : '{{ children["#subtitle"] | raw }}',
+    yAxisName : '{{ children["#yAxisName"] | raw }}',
+    comment : '{{ children["#comment"] | raw }}',
+    displayType : {{ children["#displayType"] | raw }},
+    displayMode : {{ children["#displayMode"] | raw }},
+    savedResultUrl : '{{ children["#savedResultUrl"] | raw }}',
+    savedResultText : {{ children["#savedResultText"] | default('{}') | raw }},
+    seriesNames : '{{ children["#seriesNames"] | raw }}',
+    seriesColor : '{{ children["#seriesColor"] | raw }}',
+    displayOptions : {{ children["#displayOptions"] | default('{}') | raw  }},
+});
+</script>
+
+{% if children["#comment"] is not empty %}
+    <p><strong>viðm.:</strong> {{ children["#comment"] }}</p>    
+{% endif %}
