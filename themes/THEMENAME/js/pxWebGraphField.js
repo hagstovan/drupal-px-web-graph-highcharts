@@ -8,25 +8,31 @@
         },
         chart: {
             type: "line",
-            backgroundColor: "rgba(255, 255, 255, 0)",
-            borderWidth: 0,
-            renderTo: "container",
-            marginRight: 20
+            spacing: [50, 30, 50, 30]
         },
         rangeSelector: {
             enabled: false
         },
         exporting: {
-            enabled: false
+            buttons: {
+                contextButton: {
+                    y: -10
+                }
+            }
         },
         navigator: {
             enabled: true
         },
         title: {
-            text: ""
+            text: "",
+            align: 'left', 			     
+            y: 0,
+            margin: 20
         },
         subtitle: {
-            text: ""
+            text: "",
+            align: 'left',
+            y: 22 
         },
         legend: {
             layout: "horizontal",
@@ -54,30 +60,31 @@
         },
         yAxis: {
             title: {
-                text: "",
-                style: {
-                    color: "#000",
-                    fontWeight: "normal",
-                    fontSize: "12px"
-                }
+                align: 'high',
+                offset: 0,
+                rotation: 0,
+                y: -23,
+                x: -3,
+                text: ""
             },
             lineColor: "#000",
             tickColor: "#000",
             labels: {
                 formatter: function () {
                     return Highcharts.numberFormat(this.value, 0);
-                },
-                style: {
-                    color: "#000",
-                    fontSize: "11px"
                 }
             },
         },
         legend: {
-            enabled: true
+            enabled: true,
+            layout: 'horizontal',
+            backgroundColor: '#FFFFFF',
+            align: 'center',
+            verticalAlign: 'top',
+            y: -20
         },
         tooltip: {
-            enabled: true
+            enabled: true,
         },
         plotOptions: {
             line: {
@@ -231,8 +238,17 @@
 
         let metadata = savedResultText["metadata"];
 
-        let stub = metadata["STUB[fo]"]["TABLE"];
-        let districts = metadata["VALUES[fo]"][stub];
+        let stub = null;
+        if(metadata["STUB[fo]"])
+            stub = metadata["STUB[fo]"]["TABLE"];
+        else if(metadata["STUB"])
+            stub = metadata["STUB"]["TABLE"];
+
+        let districts = null;
+        if(metadata["VALUES[fo]"])
+            districts = metadata["VALUES[fo]"][stub];
+        else if(metadata["VALUES"])
+            districts = metadata["VALUES"][stub];
 
         let isDistricsMap = true;
         let minValue = 99999999999;
@@ -251,10 +267,12 @@
             if (mappedDisctrict !== undefined) {
                 let dataValue = savedResultText["data"][i];
 
-                if (minValue > dataValue)
+                if (minValue > Number(dataValue)) {
                     minValue = dataValue;
-                if (maxValue < dataValue)
+                }
+                if (maxValue < Number(dataValue)) {
                     maxValue = dataValue;
+                }
 
                 data.push([mappedDisctrict, dataValue]);
             } else {
@@ -283,6 +301,8 @@
             displayOptions.series[0].data = data;
             displayOptions.series[0].mapData = geojson;
 
+            log(displayOptions);
+            
             //Render the Map
             pxPlaceholder.highcharts('Map', displayOptions);
         });
@@ -504,6 +524,20 @@
         log(tickIntervalToUse);
         log(highchartsOptions.xAxis.tickInterval);
         highchartsOptions.xAxis.tickInterval = tickIntervalToUse;
+
+        log(processedData);
+
+        if(processedData.length < 2)
+            highchartsOptions.legend.enabled = false;
+        else if(processedData.length > 4) {
+            highchartsOptions.legend.align = 'right';
+            highchartsOptions.legend.verticalAlign = 'top';
+            highchartsOptions.legend.layout = 'vertical';
+            highchartsOptions.legend.align = 'right';
+            highchartsOptions.legend.x = 0;
+            highchartsOptions.legend.y = 100;
+        }
+
 
         if (pxData["yAxisName"])
             highchartsOptions.yAxis.title.text = pxData["yAxisName"];
