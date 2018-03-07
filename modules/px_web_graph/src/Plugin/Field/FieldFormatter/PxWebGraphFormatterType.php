@@ -49,9 +49,10 @@ class PxWebGraphFormatterType extends FormatterBase {
 
       $storageName = "pxPlaceholder".$id;
       $elements[$delta] = array(
-        '#type' => 'markup',
-        '#markup' => $markup,
-        '#theme' => 'px_web',
+        //'#theme' => 'test',
+        //'#type' => 'markup',
+        //'#markup' => $markup,
+        '#theme' => 'px__web__graph',
         '#title' => $item->title,
         '#subtitle' => $item->subtitle,
         '#yAxisName' => $item->yAxisName,

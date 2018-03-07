@@ -33,10 +33,6 @@ Add to the bottom of before the body templates\layout\html.html.twig
 <script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/exporting.js"></script>
 ```
 
-Add the block template:
-
-copy file "themes\THEMENAME\templates\blocks\field--px-web-graph-field-type.html" to your DRUPALINSTALLATION\themes\YOURTHEMENAME\templates\blocks\ folder 
-
 # How to set up a paragraphs
 Pre: Install paragraphs and entity reference revisions
 

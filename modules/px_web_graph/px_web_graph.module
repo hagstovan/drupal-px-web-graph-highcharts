@@ -26,12 +26,10 @@ function px_web_graph_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
- /*
 function px_web_graph_theme() {
   return [
-    'px_web_graph' => [
+    'px__web__graph' => [
       'render element' => 'children',
     ],
   ];
 }
-*/
