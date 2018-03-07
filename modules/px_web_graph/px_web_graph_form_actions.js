@@ -8,25 +8,31 @@
         },
         chart: {
             type: "line",
-            backgroundColor: "rgba(255, 255, 255, 0)",
-            borderWidth: 0,
-            renderTo: "container",
-            marginRight: 20
+            spacing: [50, 30, 50, 30]
         },
         rangeSelector: {
             enabled: false
         },
         exporting: {
-            enabled: false
+            buttons: {
+                contextButton: {
+                    y: -10
+                }
+            }
         },
         navigator: {
             enabled: true
         },
         title: {
-            text: ""
+            text: "",
+            align: 'left', 			     
+            y: 0,
+            margin: 20
         },
         subtitle: {
-            text: ""
+            text: "",
+            align: 'left',
+            y: 22 
         },
         legend: {
             layout: "horizontal",
@@ -54,30 +60,31 @@
         },
         yAxis: {
             title: {
-                text: "",
-                style: {
-                    color: "#000",
-                    fontWeight: "normal",
-                    fontSize: "12px"
-                }
+                align: 'high',
+                offset: 0,
+                rotation: 0,
+                y: -23,
+                x: -3,
+                text: ""
             },
             lineColor: "#000",
             tickColor: "#000",
             labels: {
                 formatter: function () {
                     return Highcharts.numberFormat(this.value, 0);
-                },
-                style: {
-                    color: "#000",
-                    fontSize: "11px"
                 }
             },
         },
         legend: {
-            enabled: true
+            enabled: true,
+            layout: 'horizontal',
+            backgroundColor: '#FFFFFF',
+            align: 'center',
+            verticalAlign: 'top',
+            y: -20
         },
         tooltip: {
-            enabled: true
+            enabled: true,
         },
         plotOptions: {
             line: {
