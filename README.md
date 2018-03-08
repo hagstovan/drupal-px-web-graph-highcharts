@@ -9,30 +9,6 @@
 
 copy the folder modules\px_web_graph to your DRUPALINSTALLATION\modules
 
-## Set up the theme
-
-Edit the SOMETEMPLATE.libraries.yml
-
-```
-global-js:
-  js:
-    ...
-    js/underscore-min.js: {}   
-    js/px.min.js: {}   
-    js/pxWebGraphField.js: {}
-	....
-```
-
-Add to the bottom of before the body templates\layout\html.html.twig
-```
-<script src="https://hagvarp.hagstova.fo/lib/js/highstock-release/highstock.js"></script>
-<script src="https://hagvarp.hagstova.fo/lib/js/highstock-release/modules/exporting.js"></script>
-
-<script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/map.js"></script>   
-<script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/data.js"></script>
-<script src="https://hagvarp.hagstova.fo/lib/js/highmaps-release/modules/exporting.js"></script>
-```
-
 # How to set up a paragraphs
 Pre: Install paragraphs and entity reference revisions
 
