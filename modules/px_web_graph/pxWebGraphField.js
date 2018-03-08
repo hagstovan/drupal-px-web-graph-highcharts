@@ -128,8 +128,10 @@
             maxColor: "#306b34"
         },
         tooltip: {
-            valueDecimals: 1,
-            valueSuffix: '',
+            // valueDecimals: 1,
+            // valueSuffix: '',
+            // headerFormat: '',
+             pointFormat: '{point.readableName}: {point.value:.1f}'
         },
         plotOptions: {
             map: {
@@ -144,8 +146,8 @@
         series: [{
             data: null,
             mapData: null,
-            joinBy: ['label', 0],
-            keys: ['label', 'value'],
+            joinBy: 'label',
+            keys: ['label', 'value', 'readableName'],
             name: 'Sýsla',
             states: {
                 hover: {
@@ -259,8 +261,10 @@
 
             let disctrictName = districts[i];
 
-            if(isDistricsMap && disctrictName.indexOf("øki") != -1)
+            if(isDistricsMap && disctrictName.indexOf("øki") != -1) {
                 isDistricsMap = false;
+            }
+
 
             let mappedDisctrict = districsMapper[disctrictName];
 
@@ -274,7 +278,7 @@
                     maxValue = dataValue;
                 }
 
-                data.push([mappedDisctrict, dataValue]);
+                data.push([mappedDisctrict, dataValue, disctrictName]);
             } else {
                 log("Can not map disctrict " + disctrictName);
             }
@@ -299,6 +303,7 @@
             displayOptions.colorAxis.min = minValue;
             displayOptions.colorAxis.max = maxValue;
             displayOptions.series[0].data = data;
+            displayOptions.series[0].name = isDistricsMap ? "Sýsla" : "Øki";
             displayOptions.series[0].mapData = geojson;
 
             log(displayOptions);
