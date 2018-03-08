@@ -5,7 +5,8 @@ px_web_graph_form_actions:
     pxWebGraphField.js: {}
     px.min.js: {}
     underscore-min.js: {}
-    data.js: {}
-    exporting.js: {}
     highstock.js: {}
     map.js: {}
+    data.js: {}
+    exporting.js: {}
+    
