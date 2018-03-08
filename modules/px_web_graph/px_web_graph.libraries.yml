@@ -2,5 +2,10 @@ px_web_graph_form_actions:
   version: 1.x
   js:
     px_web_graph_form_actions.js: {}
+    pxWebGraphField.js: {}
     px.min.js: {}
     underscore-min.js: {}
+    data.js: {}
+    exporting.js: {}
+    highstock.js: {}
+    map.js: {}

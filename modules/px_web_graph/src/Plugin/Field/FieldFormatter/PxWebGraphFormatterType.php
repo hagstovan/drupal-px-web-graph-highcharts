@@ -8,6 +8,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 
+use Drupal\px_web_graph\Utilities;
 /**
  * Plugin implementation of the 'px_web_graph_formatter_type' formatter.
  *
@@ -34,6 +35,8 @@ class PxWebGraphFormatterType extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
 
+    $u = new Utilities();
+    $u->test();
     
     $elements = array();
 
@@ -52,6 +55,11 @@ class PxWebGraphFormatterType extends FormatterBase {
         //'#theme' => 'test',
         //'#type' => 'markup',
         //'#markup' => $markup,
+        '#attached' => array(
+          'library' => array(
+            'px_web_graph/px_web_graph_form_actions',
+          ),
+        ),
         '#theme' => 'px__web__graph',
         '#title' => $item->title,
         '#subtitle' => $item->subtitle,
