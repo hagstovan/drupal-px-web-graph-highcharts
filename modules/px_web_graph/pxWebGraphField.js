@@ -361,11 +361,17 @@
 
         //We need to interate headings and check values for each her
 
+        log("-- headings");
         log(headings);
+        log("-- values");
         log(values);
+        log("-- timeVal");
         log(timeVal);
+        log("-- timeValueTypes");
         log(timeValueTypes);
+        log("-- timeValueType");
         log(timeValueType);
+        log("-- timeValues");
         log(timeValues);
 
         //Find Series (groups)  

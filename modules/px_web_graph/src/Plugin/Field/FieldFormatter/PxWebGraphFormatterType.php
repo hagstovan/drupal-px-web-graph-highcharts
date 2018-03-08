@@ -31,6 +31,11 @@ class PxWebGraphFormatterType extends FormatterBase {
       return PxWebGraphFormatterType::$currentId;
   }
 
+  private function log($o) {
+    var_dump($o);
+    echo "<br/>";
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -48,12 +53,10 @@ class PxWebGraphFormatterType extends FormatterBase {
       //   //Convert to json data
       //   $timeValues = $pxFile->keyword("TIMEVAL");
 
-        
-        
-
       //   $headings = $pxFile->keyword("HEADING");
       //   $values = $pxFile->keyword("VALUES");
       //   $stubs = $pxFile->keyword("STUB");
+      //   $variables = $pxFile->variables();
 
       //   //Find time value
       //   $timeValueType = $timeValues->subKeys[0];
@@ -62,30 +65,169 @@ class PxWebGraphFormatterType extends FormatterBase {
       //       $timeValueType = $headings->values[0];
       //   }
 
-      //   //Find time values
-      //   $timeValuesElements = $timeValues->values;
-      //   var_dump($timeValuesElements);
-      //   echo "<br/><br/>";
+      //   $timeValuesElements = $timeValues->values;        
+
+      //   // $this->log("-- headings");
+      //   // $this->log($headings->values);
+
+      //   // $this->log("-- values");
+      //   // $this->log($pxFile->values("kyn"));
+      //   // $this->log($pxFile->values("mát"));
+      //   // $this->log($pxFile->values("mánaður"));
+
+      //   // $this->log("-- timeVal");
+      //   // $this->log($timeValuesElements);
+
+      //   // $this->log("-- timeValueTypes");
+      //   // $this->log($timeValueType);
+
+      //   // $this->log("-- timeValues");
+      //   // $this->log($pxFile->values($timeValueType));
+
+
+      //   //Try and join all stubs to individual series
+      //   $series = [];
+      //   foreach($stubs->values as $stub) {
+      //     $partialSeries = $pxFile->values($stub);
+      //     $semiSeries = $series;
+      //     $series = [];
+
+      //     if(count($semiSeries) > 0) {
+      //       foreach($semiSeries as $semiSerie) {
+      //         foreach($partialSeries as $partialSerie) {
+      //           $serie = $semiSerie . " - " . $partialSerie;
+      //           array_push($series, $serie);
+      //         }    
+      //       }
+      //     } else {
+      //       foreach($partialSeries as $partialSerie) {
+      //         $serie = $partialSerie;
+      //         array_push($series, $serie);
+      //       }    
+      //     }
+      //   }
+      //   $this->log($series);
+
+        
+
+      //   //Find Colors
+      //   $colors = ["#7fb800", "#00a6ed", "#f7b538", "#fb6107", '#9b1212', '#306b34', '#012169', "#7fb800", "#00a6ed", "#f7b538", "#fb6107", '#9b1212', '#306b34', '#012169'];
+        
+      //   if($item->seriesColor) {
+      //     $arrayOfColors = split(",", $item->seriesColor);
+      //     for($i =0; $i < count($arrayOfColors); $i++) {
+      //       if (count($colors) <= $i) {
+      //         array_push($arrayOfColors[$i]);
+      //       } else {
+      //         $colors[$i] = $arrayOfColors[$i];
+      //       }
+      //     }
+      //   }
+
+
+      //   //Find Series Names
+      //   $seriesNames = [];
+      //   if ($item->seriesNames) {
+      //     $seriesNames = split(",", $item->seriesNames);
+      //   }
+
+      //   //Process Data
+      //   $timeValues = $pxFile->values($timeValueType);
+
+      //   $min = 999999999999999;
+      //   $max = 0;
+      //   $processedData = [];
+      //   $tickIntervalToUse = 24 * 3600 * 1000 * 25; //TODO: defaultDisplayOptions.xAxis.tickInterval
+      //   $isCategory = false;
 
       //   //data
       //   $data = $pxFile->data();
 
+      //   for($i = 0; $i < count($series); $i++) {
+      //     $currentSeries = $series[$i];
+
+      //     $serie = new stdClass();
+      //     $serie->data = [];
+      //     $serie->color = $colors[$i];
+      //     $serie->borderWidth = 0;
+      //     $serie->data = [];
+      //     $serie->tooltip = new stdClass();
+      //     $serie->tooltip->valueDecimals = 0;
+
+      //     //Set series name
+      //     if (count($seriesNames) > $i && count($seriesNames[$i]) > 0)
+      //       $serie->name = $seriesNames[$i];
+      //     else
+      //       $serie->name = $currentSeries;
+
+      //     //Set Series Color
+      //     if (count($colors) > $i && count($colors[$i]) > 0)
+      //         $serie->color = $colors[$i];
+      //     else
+      //         $serie->color = "#002d62";
+
+
+      //     for ($j = 0; $j < count($timeValues); $j++) {
+      //       $timeValue = $timeValues[$j];
+
+      //        $time = $timeValue;
+      //       if(strpos($time, 'M') > 0) {
+      //          $time = str_replace("M", "-", $time);
+      //          $tickIntervalToUse = 24 * 3600 * 1000 * 25;
+      //       } 
+
+      //       $date = date_parse($time);
+      //       //TODO NEED TO CONVERT TO JS TICKS
+            
+      //       $calculatedIndex = $j + (count($timeValues) * $i);
+      //       $value = $data[$calculatedIndex];
+            
+
+      //       if(count($date->errors) == 0) {
+      //         array_push($serie->data, [ 0, $value ]);
+      //       } else {
+      //         $isCategory = true;
+      //         array_push($serie->data, [ $timeValue, $value ]);
+      //       }
+
+      //       // let date = Date.parse(time);
+
+      //       // if (!isNaN(date)) {
+      //       //     if (min > date)
+      //       //         min = date;
+      //       //     if (date > max)
+      //       //         max = date;
+
+      //       //     serie.data.push([date, parseFloat(data[i + (timeValues.length * j)])]);
+      //       // } else {
+      //       //     isCategory = true;
+      //       //     serie.data.push([timeValue, parseFloat(data[i + (timeValues.length * j)])]);
+      //       // }
+      //     }
+
+      //     array_push($processedData, $serie);
+      //   }
+      //   //$this->log($processedData);
+        
+
+        
+
       //   //Find time values (X-Axis)
-      //   echo "timeValues<br/>";
-      //   var_dump($timeValues);
-      //   echo "<br/><br/>";
+      //   // echo "timeValues<br/>";
+      //   // var_dump($timeValues);
+      //   // echo "<br/><br/>";
 
-      //   echo "headings<br/>";
-      //   var_dump($headings);
-      //   echo "<br/><br/>";
+      //   // echo "headings<br/>";
+      //   // var_dump($headings);
+      //   // echo "<br/><br/>";
 
-      //   echo "values<br/>";
-      //   var_dump($values);
-      //   echo "<br/><br/>";
+      //   // echo "values<br/>";
+      //   // var_dump($values);
+      //   // echo "<br/><br/>";
 
-      //   echo "stubs<br/>";
-      //   var_dump($stubs);
-      //   echo "<br/><br/>";
+      //   // echo "stubs<br/>";
+      //   // var_dump($stubs);
+      //   // echo "<br/><br/>";
 
       //   // $series = [];
       //   // for($i = 0; $i < count($stubs); $i++) {
