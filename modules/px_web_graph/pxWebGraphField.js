@@ -27,7 +27,7 @@
             text: "",
             align: 'left', 			     
             y: 0,
-            margin: 20
+            margin: 40
         },
         subtitle: {
             text: "",
@@ -63,8 +63,8 @@
                 align: 'high',
                 offset: 0,
                 rotation: 0,
-                y: -23,
-                x: -3,
+                y: -25,
+                x: 0,
                 text: ""
             },
             lineColor: "#000",
@@ -81,7 +81,7 @@
             backgroundColor: '#FFFFFF',
             align: 'center',
             verticalAlign: 'top',
-            y: -20
+            y: 40
         },
         tooltip: {
             enabled: true,
@@ -103,16 +103,18 @@
 
     let defaultMapDisplayOptions = {
         title: {
-            text: ''
+            text: '',
+
         },
         subtitle: {
-            text: ''
+            text: '',
         },
         credits: {
             enabled: false
         },
         chart: {
             backgroundColor: "rgba(255, 255, 255, 0)",
+            spacing: [30, 30, 30, 30]            
         },
         exporting: {
             enabled: false

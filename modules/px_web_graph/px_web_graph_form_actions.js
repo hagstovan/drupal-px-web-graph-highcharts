@@ -28,7 +28,7 @@
             text: "",
             align: 'left', 			     
             y: 0,
-            margin: 20
+            margin: 40
         },
         subtitle: {
             text: "",
@@ -64,8 +64,8 @@
                 align: 'high',
                 offset: 0,
                 rotation: 0,
-                y: -23,
-                x: -3,
+                y: -25,
+                x: 0,
                 text: ""
             },
             lineColor: "#000",
@@ -82,7 +82,7 @@
             backgroundColor: '#FFFFFF',
             align: 'center',
             verticalAlign: 'top',
-            y: -20
+            y: 40
         },
         tooltip: {
             enabled: true,
@@ -104,16 +104,18 @@
 
     let defaultMapDisplayOptions = {
         title: {
-            text: ''
+            text: '',
+
         },
         subtitle: {
-            text: ''
+            text: '',
         },
         credits: {
             enabled: false
         },
         chart: {
             backgroundColor: "rgba(255, 255, 255, 0)",
+            spacing: [30, 30, 30, 30]            
         },
         exporting: {
             enabled: false
@@ -129,8 +131,10 @@
             maxColor: "#306b34"
         },
         tooltip: {
-            valueDecimals: 1,
-            valueSuffix: '',
+            // valueDecimals: 1,
+            // valueSuffix: '',
+            // headerFormat: '',
+             pointFormat: '{point.readableName}: {point.value:.1f}'
         },
         plotOptions: {
             map: {
@@ -145,8 +149,8 @@
         series: [{
             data: null,
             mapData: null,
-            joinBy: ['label', 0],
-            keys: ['label', 'value'],
+            joinBy: 'label',
+            keys: ['label', 'value', 'readableName'],
             name: 'Sýsla',
             states: {
                 hover: {
