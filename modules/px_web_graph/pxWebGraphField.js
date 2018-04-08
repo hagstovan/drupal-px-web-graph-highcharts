@@ -353,9 +353,13 @@
         if(!values)
             values = metadata["VALUES"];
 
-        let timeValueTypes = Object.keys(timeVal);
-        let timeValueType = timeValueTypes[0];
-
+        let timeValueTypes = null;
+        let timeValueType = null;
+        if(timeVal) {
+            timeValueTypes = Object.keys(timeVal);
+            timeValueType = timeValueTypes[0];
+        }
+        
         let firstHeading = headings;
         if (Array.isArray(headings))
             firstHeading = headings[0];
@@ -367,7 +371,6 @@
         let timeValues = values[timeValueType];
 
         //We need to interate headings and check values for each her
-
         log("-- headings");
         log(headings);
         log("-- values");
