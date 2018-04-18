@@ -73,7 +73,7 @@
                 formatter: function () {
                     return Highcharts.numberFormat(this.value, 0);
                 }
-            },
+            }
         },
         legend: {
             enabled: true,
@@ -92,7 +92,7 @@
                     enabled: false,
                 },
                 dataLabels: {
-                    enabled: false
+                    enabled: false,   
                 }
             },
             series: {
@@ -541,6 +541,42 @@
         log(highchartsOptions.xAxis.tickInterval);
         highchartsOptions.xAxis.tickInterval = tickIntervalToUse;
 
+        //Show last dataLabel in chart
+        highchartsOptions.plotOptions.line.dataLabels = {
+            enabled: true,
+            color: "#FFF",
+            useHTML: true,
+            crop: false,
+            overflow: false,
+            formatter: function () {
+                var last = null;
+                for (var i = this.series.data.length - 1; i > 0; i--) {
+                    if (!isNaN(this.series.data[i].y)) {
+                        last = this.series.data[i];
+                        break;
+                    }
+                }
+                
+                if (last !== null && this.point.category === last.category && this.point.y === last.y) {
+
+                    var label = '<div class="MyDataLabelTooltip">' +
+                        '<span class="datetext">';
+
+                    if (isCategory) {
+                        label += this.point.x;
+                    } else {
+                        label += Highcharts.dateFormat("%b &apos;%y", this.point.x);
+                    }
+
+                    label += "</span><br />" +
+                        Highcharts.numberFormat(this.point.y, 0) +
+                        "</div>"
+
+                    return label;
+                }
+                return;
+            }
+        };
         log(processedData);
 
         if(processedData.length < 2)
