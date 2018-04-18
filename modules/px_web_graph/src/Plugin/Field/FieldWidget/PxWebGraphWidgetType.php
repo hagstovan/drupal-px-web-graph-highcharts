@@ -126,6 +126,13 @@ class PxWebGraphWidgetType extends WidgetBase {
       '#default_value' => isset($items[$delta]->seriesColor) ? $items[$delta]->seriesColor : "",
     ];
 
+    $element['sortDirection'] = [
+      '#type' => 'radios',
+      '#title' => 'Sortering',
+      '#options' => array(0 => $this->t('ASC'), 1 => $this->t('DESC')),
+      '#default_value' => isset($items[$delta]->sortDirection) ? $items[$delta]->sortDirection : 0,
+    ];
+
     $element['displayOptions'] = [
       '#type' => 'textarea',
       '#title' => 'Uppsetan',      
@@ -133,7 +140,9 @@ class PxWebGraphWidgetType extends WidgetBase {
       '#suffix' => '<div class="load-display-options-default-button"></div></div></div></div>',
       '#attributes' => ['class' => ['edit-field-display-options']],
       '#default_value' => isset($items[$delta]->displayOptions) ? $items[$delta]->displayOptions : "",
-    ];  
+    ];
+
+    
 
     return $element;
     //return ['value' => $element];

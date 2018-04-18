@@ -70,6 +70,9 @@ class PxWebGraphFieldType extends FieldItemBase {
       ->setLabel(new TranslatableMarkup('SeriesColor'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
+    $properties['sortDirection'] = DataDefinition::create('integer')
+      ->setLabel(new TranslatableMarkup('sortDirection'))
+      ->setRequired(true);
     return $properties;
   }
 
@@ -131,6 +134,10 @@ class PxWebGraphFieldType extends FieldItemBase {
           'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
           'length' => 65000,
           'binary' => $field_definition->getSetting('case_sensitive'),
+        ],
+        'sortDirection' => [
+          'type' => 'int',
+          'default' => 0,
         ],
       ],
     ];

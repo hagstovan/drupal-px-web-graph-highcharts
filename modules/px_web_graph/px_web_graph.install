@@ -9,9 +9,9 @@ use Drupal\field\Entity\FieldConfig;
  * Update Placeholder Template.
  * Naming should be: px_web_graph_update_8101
  */
-function RenamedSoUpdateDoesNotRun() {
+function px_web_graph_update_8101() {
   $processed_fields = [];
-  $columns_to_add = ['testText'];
+  $columns_to_add = ['sortDirection'];
   $field_type_manager = \Drupal::service('plugin.manager.field.field_type');
   $address_definition = $field_type_manager->getDefinition('px_web_graph_field_type');
 

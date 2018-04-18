@@ -51,6 +51,7 @@
             min: 0,
             max: 0,
             type: "datetime",
+            reversed: false,
             labels: {
                 style: {
                     color: "#000",
@@ -471,6 +472,7 @@
         let processedData = [];
         let tickIntervalToUse = defaultDisplayOptions.xAxis.tickInterval;
 
+        //for (var j = series.length - 1; j > 0; j--) {
         for (var j = 0; j < series.length; j++) {
             let currentSeries = series[j];
             let serie = {
@@ -590,6 +592,8 @@
             highchartsOptions.legend.y = 100;
         }
 
+        if(pxData.sortDirection == 1)
+            highchartsOptions.xAxis.reversed = true;
 
         if (pxData["yAxisName"])
             highchartsOptions.yAxis.title.text = pxData["yAxisName"];
