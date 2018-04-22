@@ -243,11 +243,50 @@
         else if(metadata["STUB"])
             stub = metadata["STUB"]["TABLE"];
 
+        let values = null;
+        if (metadata["VALUES[fo]"])
+            values = metadata["VALUES[fo]"];
+        else if (metadata["VALUES"])
+            values = metadata["VALUES"];
+
         let districts = null;
-        if(metadata["VALUES[fo]"])
-            districts = metadata["VALUES[fo]"][stub];
-        else if(metadata["VALUES"])
-            districts = metadata["VALUES"][stub];
+        if (values)
+            districts = values[stub];
+
+        let timeVal = metadata["TIMEVAL[fo]"];
+        if (!timeVal)
+            timeVal = metadata["TIMEVAL"];
+
+        let timeValueTypes = null;
+        if (timeVal)
+            timeValueTypes = Object.keys(timeVal);
+
+        let timeValues = null;
+        if (values && timeValueTypes.length > 0)
+            timeValues = values[timeValueTypes[0]];
+        if (timeValues && !Array.isArray(timeValues))
+            timeValues = [timeValues];
+        
+        //values
+        let titleToAppend = "";
+        if (timeValues && timeValues.length == 1) {
+            let firstTimeVal = timeValues[0];
+            let time = firstTimeVal;
+            if (firstTimeVal.indexOf("M") > -1) {
+                time = firstTimeVal.replace("M", "-");
+            }
+
+            let parsedDate = Date.parse(time);
+            if(!isNaN(parsedDate)) {
+                if (firstTimeVal.indexOf("M") > -1) {
+                    titleToAppend = " " + Highcharts.dateFormat("%b %Y", parsedDate)
+                } else {
+                    titleToAppend = " " + Highcharts.dateFormat("%Y", parsedDate)
+                }   
+            }
+        }
+
+        
 
         let isDistricsMap = true;
         let minValue = 99999999999;
@@ -295,13 +334,16 @@
             }
 
             //Overwrite display options
-            displayOptions.title.text = pxData.title;
+            displayOptions.title.text = pxData.title + " " + titleToAppend;
             displayOptions.subtitle.text = pxData.subtitle;
             displayOptions.colorAxis.min = minValue;
             displayOptions.colorAxis.max = maxValue;
             displayOptions.series[0].data = data;
             displayOptions.series[0].name = isDistricsMap ? "Sýsla" : "Øki";
             displayOptions.series[0].mapData = geojson;
+
+
+            
 
             log(displayOptions);
             
@@ -586,7 +628,7 @@
 
                     if (isCategory) {
                         label += this.point.x;
-                    } else {
+                    } else {Highcharts.
                         label += Highcharts.dateFormat("%b &apos;%y", this.point.x);
                     }
 
@@ -630,17 +672,27 @@
             highchartsOptions.navigator.enabled = false;
             highchartsOptions.xAxis.categories = timeValues;
             highchartsOptions.xAxis.tickInterval = null;
-        } else {
-            //Append Date to title if only one time value and not category
-            if (timeValues.length == 1 && processedData.length > 0 && processedData[0].data.length > 0 && processedData[0].data[0].length > 0) {
-                let firstTimeVal = timeValues[0];
-                let firstDateTicks = processedData[0].data[0][0];
-                let firstDate = new Date(firstDateTicks);
+        } 
 
+        
+
+        //Append the date to the title if only one date
+        if (timeValueTypes && timeValueTypes.length > 0) {
+            let innerTimeVal = timeValueTypes[0];
+
+            let firstTimeVal = values[innerTimeVal];
+
+            let time = firstTimeVal;
+            if (firstTimeVal.indexOf("M") > -1) {
+                time = firstTimeVal.replace("M", "-");
+            }
+
+            let parsedDate = Date.parse(time);
+            if (!isNaN(parsedDate)) {
                 if (firstTimeVal.indexOf("M") > -1) {
-                    highchartsOptions.title.text += " " + firstDate.toLocaleDateString("en-us", { month: "short", year: "numeric" })
+                    highchartsOptions.title.text += " " + Highcharts.dateFormat("%b %Y", parsedDate)
                 } else {
-                    highchartsOptions.title.text += " " + firstDate.toLocaleDateString("en-us", { year: "numeric" })
+                    highchartsOptions.title.text += " " + Highcharts.dateFormat("%Y", parsedDate)
                 }
             }
         }
