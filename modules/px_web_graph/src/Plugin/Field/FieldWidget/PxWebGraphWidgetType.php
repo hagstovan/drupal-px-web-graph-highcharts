@@ -126,6 +126,12 @@ class PxWebGraphWidgetType extends WidgetBase {
       '#default_value' => isset($items[$delta]->seriesColor) ? $items[$delta]->seriesColor : "",
     ];
 
+    $element['seriesType'] = [
+      '#type' => 'textfield',
+      '#title' => 'Seriuslag',
+      '#default_value' => isset($items[$delta]->seriesType) ? $items[$delta]->seriesType : "",
+    ];
+
     $element['sortDirection'] = [
       '#type' => 'radios',
       '#title' => 'Legend sortering',

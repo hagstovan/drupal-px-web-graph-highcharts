@@ -69,7 +69,9 @@
                 text: ""
             },
             lineColor: "#000",
-            tickColor: "#000"
+            tickColor: "#000",
+            labels: {
+            }
         },
         legend: {
             enabled: true,
@@ -458,6 +460,13 @@
         }
         log(seriesNames);
 
+        let seriesType = [];
+        if (pxData["seriesType"]) {
+            seriesType = pxData["seriesType"].split(",").map(function (item) {
+                return item.trim();
+            });
+        }
+
         //Process Data
 
         let defaultDisplayOptions = getDefaultDisplayOptions();
@@ -490,6 +499,12 @@
                 serie.color = colors[j]
             else
                 serie.color = "#002d62";
+
+            //Set Series Type
+            if (seriesType.length > j && seriesType[j].length > 0)
+                serie.type = seriesType[j]
+            else
+                serie.type = "line";
 
             for (var i = 0; i < timeValues.length; i++) {
                 let timeValue = timeValues[i];
@@ -593,6 +608,7 @@
         if (pxData["yAxisName"])
             highchartsOptions.yAxis.title.text = pxData["yAxisName"];
 
+        
         highchartsOptions.yAxis.labels.formatter = function() {
             return Highcharts.numberFormat(this.value, 0);
         };

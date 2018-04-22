@@ -36,6 +36,7 @@ pxDatas.push(
     savedResultText : {{ children["#savedResultText"] | default('{}') | raw }},
     seriesNames : '{{ children["#seriesNames"] | raw }}',
     seriesColor : '{{ children["#seriesColor"] | raw }}',
+    seriesType : '{{ children["#seriesType"] | raw }}',
     displayOptions : {{ children["#displayOptions"] | default('{}') | raw  }},
     sortDirection : {{ children["#sortDirection"] | raw  | default(0)}},
 });

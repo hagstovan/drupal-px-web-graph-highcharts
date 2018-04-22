@@ -269,6 +269,7 @@ class PxWebGraphFormatterType extends FormatterBase {
         '#displayOptions' => $item->displayOptions,
         '#seriesNames' => $item->seriesNames,
         '#seriesColor' => $item->seriesColor,
+        '#seriesType' => $item->seriesType,
         "#id" => $id,
         "#storageName" => $storageName,
 
