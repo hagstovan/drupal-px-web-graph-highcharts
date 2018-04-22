@@ -26,14 +26,14 @@
         },
         title: {
             text: "",
-            align: 'left', 			     
+            align: 'left',
             y: 0,
             margin: 40
         },
         subtitle: {
             text: "",
             align: 'left',
-            y: 22 
+            y: 22
         },
         legend: {
             layout: "horizontal",
@@ -52,6 +52,7 @@
             min: 0,
             max: 0,
             type: "datetime",
+            reversed: false,
             labels: {
                 style: {
                     color: "#000",
@@ -71,10 +72,7 @@
             lineColor: "#000",
             tickColor: "#000",
             labels: {
-                formatter: function () {
-                    return Highcharts.numberFormat(this.value, 0);
-                }
-            },
+            }
         },
         legend: {
             enabled: true,
@@ -93,7 +91,7 @@
                     enabled: false,
                 },
                 dataLabels: {
-                    enabled: false
+                    enabled: false,
                 }
             },
             series: {
@@ -115,7 +113,7 @@
         },
         chart: {
             backgroundColor: "rgba(255, 255, 255, 0)",
-            spacing: [30, 30, 30, 30]            
+            spacing: [30, 30, 30, 30]
         },
         exporting: {
             enabled: false
@@ -131,10 +129,7 @@
             maxColor: "#306b34"
         },
         tooltip: {
-            // valueDecimals: 1,
-            // valueSuffix: '',
-            // headerFormat: '',
-             pointFormat: '{point.readableName}: {point.value:.1f}'
+            pointFormat: '{point.readableName}: {point.value:.1f}'
         },
         plotOptions: {
             map: {

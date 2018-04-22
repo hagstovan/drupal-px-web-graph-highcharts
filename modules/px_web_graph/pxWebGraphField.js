@@ -128,9 +128,6 @@
             maxColor: "#306b34"
         },
         tooltip: {
-            // valueDecimals: 1,
-            // valueSuffix: '',
-            // headerFormat: '',
              pointFormat: '{point.readableName}: {point.value:.1f}'
         },
         plotOptions: {
