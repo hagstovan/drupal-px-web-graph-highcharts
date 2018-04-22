@@ -593,7 +593,7 @@
         }
 
         if(pxData.sortDirection == 1)
-            highchartsOptions.xAxis.reversed = true;
+            highchartsOptions.legend.reversed = true;
 
         if (pxData["yAxisName"])
             highchartsOptions.yAxis.title.text = pxData["yAxisName"];

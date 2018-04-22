@@ -115,20 +115,20 @@ class PxWebGraphWidgetType extends WidgetBase {
 
     $element['seriesNames'] = [
       '#type' => 'textfield',
-      '#title' => 'Raðnøvn',      
+      '#title' => 'Seriunøvn',      
       '#prefix' => '<div><span class="display-options-label"><strong>Uppsetan</strong></span><div class="display-options-wrapper">',
       '#default_value' => isset($items[$delta]->seriesNames) ? $items[$delta]->seriesNames : "",
     ];
 
     $element['seriesColor'] = [
       '#type' => 'textfield',
-      '#title' => 'Raðlitir',      
+      '#title' => 'Seriulitir',      
       '#default_value' => isset($items[$delta]->seriesColor) ? $items[$delta]->seriesColor : "",
     ];
 
     $element['sortDirection'] = [
       '#type' => 'radios',
-      '#title' => 'Sortering',
+      '#title' => 'Legend sortering',
       '#options' => array(0 => $this->t('ASC'), 1 => $this->t('DESC')),
       '#default_value' => isset($items[$delta]->sortDirection) ? $items[$delta]->sortDirection : 0,
     ];
