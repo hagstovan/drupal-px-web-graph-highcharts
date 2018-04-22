@@ -37,6 +37,7 @@ pxDatas.push(
     seriesNames : '{{ children["#seriesNames"] | raw }}',
     seriesColor : '{{ children["#seriesColor"] | raw }}',
     seriesType : '{{ children["#seriesType"] | raw }}',
+    legendsVisibility: '{{ children["#legendsVisibility"] | raw }}',
     displayOptions : {{ children["#displayOptions"] | default('{}') | raw  }},
     sortDirection : {{ children["#sortDirection"] | raw  | default(0)}},
 });

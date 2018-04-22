@@ -467,6 +467,13 @@
             });
         }
 
+        let legendsVisibility = [];
+        if (pxData["legendsVisibility"]) {
+            legendsVisibility = pxData["legendsVisibility"].split(",").map(function (item) {
+                return item.trim();
+            });
+        }
+
         //Process Data
 
         let defaultDisplayOptions = getDefaultDisplayOptions();
@@ -503,8 +510,14 @@
             //Set Series Type
             if (seriesType.length > j && seriesType[j].length > 0)
                 serie.type = seriesType[j]
-            else
-                serie.type = "line";
+
+            //Set Visibility
+            if (legendsVisibility.length > j && legendsVisibility[j].length > 0) {
+                if (legendsVisibility[j] == "0")
+                    serie.visible = false;
+                else if (legendsVisibility[j] == "-1")
+                    serie.showInLegend = false;
+            }
 
             for (var i = 0; i < timeValues.length; i++) {
                 let timeValue = timeValues[i];

@@ -132,6 +132,12 @@ class PxWebGraphWidgetType extends WidgetBase {
       '#default_value' => isset($items[$delta]->seriesType) ? $items[$delta]->seriesType : "",
     ];
 
+    $element['legendsVisibility'] = [
+      '#type' => 'textfield',
+      '#title' => 'Legends vísing',
+      '#default_value' => isset($items[$delta]->legendsVisibility) ? $items[$delta]->legendsVisibility : "",
+    ];
+
     $element['sortDirection'] = [
       '#type' => 'radios',
       '#title' => 'Legend sortering',
