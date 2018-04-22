@@ -506,6 +506,13 @@
             });
         }
 
+        let seriesSign = [];
+        if (pxData["seriesSign"]) {
+            seriesSign = pxData["seriesSign"].split(",").map(function (item) {
+                return item.trim();
+            });
+        }
+
         let legendsVisibility = [];
         if (pxData["legendsVisibility"]) {
             legendsVisibility = pxData["legendsVisibility"].split(",").map(function (item) {
@@ -522,6 +529,7 @@
         let processedData = [];
         let tickIntervalToUse = defaultDisplayOptions.xAxis.tickInterval;
 
+        let hasNegativeSeries = false;
         //for (var j = series.length - 1; j > 0; j--) {
         for (var j = 0; j < series.length; j++) {
             let currentSeries = series[j];
@@ -550,6 +558,12 @@
             if (seriesType.length > j && seriesType[j].length > 0)
                 serie.type = seriesType[j]
 
+            let serieSign = "+";
+            if (seriesSign.length > j && seriesSign[j].length > 0) {
+                serieSign = seriesSign[j];
+                hasNegativeSeries = true;
+            }
+
             //Set Visibility
             if (legendsVisibility.length > j && legendsVisibility[j].length > 0) {
                 if (legendsVisibility[j] == "0")
@@ -569,16 +583,20 @@
 
                 let date = Date.parse(time);
 
+                let value = parseFloat(data[i + (timeValues.length * j)]);
+                if(serieSign == "-") {
+                    value = value * -1;
+                }
+
                 if (!isNaN(date)) {
                     if (min > date)
                         min = date;
                     if (date > max)
                         max = date;
-
-                    serie.data.push([date, parseFloat(data[i + (timeValues.length * j)])]);
+                    serie.data.push([date, value]);
                 } else {
                     isCategory = true;
-                    serie.data.push([timeValue, parseFloat(data[i + (timeValues.length * j)])]);
+                    serie.data.push([timeValue, value]);
                 }
             }
 
@@ -674,8 +692,13 @@
             highchartsOptions.xAxis.tickInterval = null;
         } 
 
+        if (hasNegativeSeries) {
+            highchartsOptions.plotOptions.series.stacking = "normal";
+            highchartsOptions.yAxis.labels.formatter = function () {
+                return Highcharts.numberFormat(Math.abs(this.value), 0);
+            };
+        }
         
-
         //Append the date to the title if only one date
         if (timeValueTypes && timeValueTypes.length > 0) {
             let innerTimeVal = timeValueTypes[0];

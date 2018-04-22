@@ -74,6 +74,10 @@ class PxWebGraphFieldType extends FieldItemBase {
       ->setLabel(new TranslatableMarkup('SeriesType'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(true);
+    $properties['seriesSign'] = DataDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('SeriesSign'))
+      ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
+      ->setRequired(true);
     $properties['legendsVisibility'] = DataDefinition::create('string')
       ->setLabel(new TranslatableMarkup('LegendsVisibility'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
@@ -144,6 +148,11 @@ class PxWebGraphFieldType extends FieldItemBase {
           'binary' => $field_definition->getSetting('case_sensitive'),
         ],
         'seriesType' => [
+          'type' => $field_definition->getSetting('is_ascii') === true ? 'text' : 'text',
+          'length' => 65000,
+          'binary' => $field_definition->getSetting('case_sensitive'),
+        ],
+        'seriesSign' => [
           'type' => $field_definition->getSetting('is_ascii') === true ? 'text' : 'text',
           'length' => 65000,
           'binary' => $field_definition->getSetting('case_sensitive'),

@@ -132,6 +132,12 @@ class PxWebGraphWidgetType extends WidgetBase {
       '#default_value' => isset($items[$delta]->seriesType) ? $items[$delta]->seriesType : "",
     ];
 
+    $element['seriesSign'] = [
+      '#type' => 'textfield',
+      '#title' => 'Seriufortekn',
+      '#default_value' => isset($items[$delta]->seriesSign) ? $items[$delta]->seriesSign : "",
+    ];
+
     $element['legendsVisibility'] = [
       '#type' => 'textfield',
       '#title' => 'Legends vísing',
@@ -144,6 +150,8 @@ class PxWebGraphWidgetType extends WidgetBase {
       '#options' => array(0 => $this->t('ASC'), 1 => $this->t('DESC')),
       '#default_value' => isset($items[$delta]->sortDirection) ? $items[$delta]->sortDirection : 0,
     ];
+
+    
 
     $element['displayOptions'] = [
       '#type' => 'textarea',

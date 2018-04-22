@@ -35,6 +35,17 @@ function px_web_graph_update_8103() {
   \Drupal::state()->set('address_8103_processed', $processed_fields);
 }
 
+/**
+ * Will add the Series Sign Field.
+ */
+function px_web_graph_update_8104()
+{
+  addNewFields(['seriesSign']);
+  
+  // Used by address_post_update_convert_names_subdivisions.
+  \Drupal::state()->set('address_8104_processed', $processed_fields);
+}
+
 
 function addNewFields($columns_to_add) {
   $processed_fields = [];
