@@ -69,12 +69,7 @@
                 text: ""
             },
             lineColor: "#000",
-            tickColor: "#000",
-            labels: {
-                formatter: function () {
-                    return Highcharts.numberFormat(this.value, 0);
-                }
-            }
+            tickColor: "#000"
         },
         legend: {
             enabled: true,
@@ -597,6 +592,10 @@
 
         if (pxData["yAxisName"])
             highchartsOptions.yAxis.title.text = pxData["yAxisName"];
+
+        highchartsOptions.yAxis.labels.formatter = function() {
+            return Highcharts.numberFormat(this.value, 0);
+        };
 
         if (isCategory) {
             highchartsOptions.xAxis.min = null;
