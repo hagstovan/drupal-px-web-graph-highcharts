@@ -630,6 +630,19 @@
             highchartsOptions.navigator.enabled = false;
             highchartsOptions.xAxis.categories = timeValues;
             highchartsOptions.xAxis.tickInterval = null;
+        } else {
+            //Append Date to title if only one time value and not category
+            if (timeValues.length == 1 && processedData.length > 0 && processedData[0].data.length > 0 && processedData[0].data[0].length > 0) {
+                let firstTimeVal = timeValues[0];
+                let firstDateTicks = processedData[0].data[0][0];
+                let firstDate = new Date(firstDateTicks);
+
+                if (firstTimeVal.indexOf("M") > -1) {
+                    highchartsOptions.title.text += " " + firstDate.toLocaleDateString("en-us", { month: "short", year: "numeric" })
+                } else {
+                    highchartsOptions.title.text += " " + firstDate.toLocaleDateString("en-us", { year: "numeric" })
+                }
+            }
         }
 
         pxPlaceholder.highcharts(highchartsOptions);
