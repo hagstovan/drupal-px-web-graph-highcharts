@@ -184,6 +184,13 @@
 
         //Find element
         let pxPlaceholder = $("." + storageName);
+
+        //Force size of pxPlaceholder if chart is animated
+        if(pxData.animate == 1) {
+            pxPlaceholder.css("height", "400px");
+            pxPlaceholder.css("margin-bottom", "50px"); //Room for play bar
+        }
+
         if (pxData["displayType"] == 0) {
             renderGraph(pxData, pxPlaceholder);
         }
@@ -267,6 +274,11 @@
         if (timeValues && !Array.isArray(timeValues))
             timeValues = [timeValues];
         
+        let motionLabels = [];
+        if (pxData.animate == 1) {
+            motionLabels = metadata["VALUES"][Object.keys(timeVal)[0]];
+        }
+
         //values
         let titleToAppend = "";
         if (timeValues && timeValues.length == 1) {
@@ -294,27 +306,50 @@
         let data = [];
         for (var i = 0; i < districts.length; i++) {
             let serie = [];
-
             let disctrictName = districts[i];
+            let mappedDisctrict = districsMapper[disctrictName];
 
             if(isDistricsMap && disctrictName.indexOf("øki") != -1) {
                 isDistricsMap = false;
             }
 
-
-            let mappedDisctrict = districsMapper[disctrictName];
-
             if (mappedDisctrict !== undefined) {
-                let dataValue = savedResultText["data"][i];
 
-                if (minValue > Number(dataValue)) {
-                    minValue = dataValue;
-                }
-                if (maxValue < Number(dataValue)) {
-                    maxValue = dataValue;
-                }
+                //Build sequences if char is animating
+                if (pxData.animate == 1) {
+                    let sequence = [];
+                    for (var j = 0; j < motionLabels.length; j++) {
+                        let dataValue = Number(savedResultText["data"][j + (i * motionLabels.length)]);
+                        sequence.push(dataValue);
 
-                data.push([mappedDisctrict, dataValue, disctrictName]);
+                        if (minValue > dataValue) {
+                            minValue = dataValue;
+                        }
+                        if (maxValue < dataValue) {
+                            maxValue = dataValue;
+                        }
+                    }
+
+                    data.push({
+                        "label": mappedDisctrict,
+                        "sequence": sequence,
+                        "value": sequence[sequence.length -1],
+                        "readableName": disctrictName
+                    });
+                } 
+                //Push simple data
+                else {
+                    let dataValue = savedResultText["data"][i];
+
+                    if (minValue > Number(dataValue)) {
+                        minValue = dataValue;
+                    }
+                    if (maxValue < Number(dataValue)) {
+                        maxValue = dataValue;
+                    }
+
+                    data.push([mappedDisctrict, dataValue, disctrictName]);
+                }
             } else {
                 log("Can not map disctrict " + disctrictName);
             }
@@ -342,8 +377,20 @@
             displayOptions.series[0].name = isDistricsMap ? "Sýsla" : "Øki";
             displayOptions.series[0].mapData = geojson;
 
-
-            
+            if(pxData.animate == 1) {
+                displayOptions.series[0].keys = null;
+                displayOptions.motion = {
+                    enabled: true,
+                    axisLabel: 'year',
+                    labels: motionLabels,
+                    series: 0, // The series which holds points to update
+                    updateInterval: 50,
+                    magnet: {
+                        round: 'floor', // ceil / floor / round
+                        step: 0.1
+                    }
+                };
+            }
 
             log(displayOptions);
             
@@ -470,6 +517,8 @@
         //Find values
         let min = 9999999999999;
         let max = 0;
+        let maxYValue = -9999999999999; //Some very low number that will be replaced
+        let minYValue = 9999999999999; //Some very high number that will be replaced
 
         
         //Find Colors
@@ -530,6 +579,12 @@
         let tickIntervalToUse = defaultDisplayOptions.xAxis.tickInterval;
 
         let hasNegativeSeries = false;
+
+        let motionLabels = [];
+        if (pxData.animate == 1) {
+            motionLabels = metadata["VALUES"][Object.keys(timeVal)[0]];
+        }
+
         //for (var j = series.length - 1; j > 0; j--) {
         for (var j = 0; j < series.length; j++) {
             let currentSeries = series[j];
@@ -583,23 +638,61 @@
 
                 let date = Date.parse(time);
 
-                let value = parseFloat(data[i + (timeValues.length * j)]);
-                if(serieSign == "-") {
-                    value = value * -1;
-                }
+                
+                if (pxData.animate == 1) {
 
-                if (!isNaN(date)) {
-                    if (min > date)
-                        min = date;
-                    if (date > max)
-                        max = date;
-                    serie.data.push([date, value]);
+                    let sequence = [];
+                    for (var k = 0; k < motionLabels.length; k++) {
+
+                        //Find correct value
+                        let value = parseFloat(data[((i + (timeValues.length * j)) * motionLabels.length) + k ]);
+                        if (serieSign == "-") {
+                            value = value * -1;
+                        }
+
+                        //Update max x and y values
+                        if (value > maxYValue) 
+                            maxYValue = value;
+                        if (value < minYValue) 
+                            minYValue = value;
+
+                        if (!isNaN(date)) {
+                            if (min > date)
+                                min = date;
+                            if (date > max)
+                                max = date;
+                            sequence.push(value);
+                        } else {
+                            isCategory = true;
+                            sequence.push(value);
+                        }
+                    }
+                    
+                    serie.data.push({
+                        "sequence": sequence
+                    });
                 } else {
-                    isCategory = true;
-                    serie.data.push([timeValue, value]);
-                }
-            }
 
+                    //Find correct value
+                    let value = parseFloat(data[i + (timeValues.length * j)]);
+                    if (serieSign == "-") {
+                        value = value * -1;
+                    }
+
+                    if (!isNaN(date)) {
+                        if (min > date)
+                            min = date;
+                        if (date > max)
+                            max = date;
+                        serie.data.push([date, value]);
+                    } else {
+                        isCategory = true;
+                        serie.data.push([timeValue, value]);
+                    }
+                }
+            }    
+            
+        
             processedData.push(serie)
         }
         log(processedData);
@@ -696,6 +789,23 @@
             highchartsOptions.plotOptions.series.stacking = "normal";
             highchartsOptions.yAxis.labels.formatter = function () {
                 return Highcharts.numberFormat(Math.abs(this.value), 0);
+            };
+        }
+        
+        if (pxData.animate == 1) {
+            highchartsOptions.yAxis.min = minYValue;
+            highchartsOptions.yAxis.max = maxYValue;
+
+            highchartsOptions.motion = {
+                enabled: true,
+                axisLabel: 'year',
+                labels: motionLabels,
+                series: [0, 1], // The series which holds points to update
+                updateInterval: 20,
+                magnet: {
+                    round: 'floor', // ceil / floor / round
+                    step: 0.02
+                }
             };
         }
         

@@ -278,6 +278,7 @@ class PxWebGraphFormatterType extends FormatterBase {
         //New
         "#chartDisplayOptions" => '',
         '#sortDirection' => $item->sortDirection,
+        '#animate' => $item->animate,
       );
     }
 

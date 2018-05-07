@@ -9,4 +9,5 @@ px_web_graph_form_actions:
     map.js: {}
     data.js: {}
     exporting.js: {}
+    motion.js: {}
     

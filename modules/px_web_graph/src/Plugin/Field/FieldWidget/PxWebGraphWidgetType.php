@@ -151,6 +151,12 @@ class PxWebGraphWidgetType extends WidgetBase {
       '#default_value' => isset($items[$delta]->sortDirection) ? $items[$delta]->sortDirection : 0,
     ];
 
+    $element['animate'] = [
+      '#type' => 'radios',
+      '#title' => 'Livandi',
+      '#options' => array(0 => $this->t('Ikki livandi'), 1 => $this->t('Livandi')),
+      '#default_value' => isset($items[$delta]->animate) ? $items[$delta]->animate : 0,
+    ];
     
 
     $element['displayOptions'] = [

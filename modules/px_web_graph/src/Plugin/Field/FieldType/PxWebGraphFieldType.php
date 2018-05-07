@@ -85,6 +85,9 @@ class PxWebGraphFieldType extends FieldItemBase {
     $properties['sortDirection'] = DataDefinition::create('integer')
       ->setLabel(new TranslatableMarkup('sortDirection'))
       ->setRequired(true);
+    $properties['animate'] = DataDefinition::create('integer')
+      ->setLabel(new TranslatableMarkup('animate'))
+      ->setRequired(true);
     return $properties;
   }
 
@@ -163,6 +166,10 @@ class PxWebGraphFieldType extends FieldItemBase {
           'binary' => $field_definition->getSetting('case_sensitive'),
         ],
         'sortDirection' => [
+          'type' => 'int',
+          'default' => 0,
+        ],
+        'animate' => [
           'type' => 'int',
           'default' => 0,
         ],

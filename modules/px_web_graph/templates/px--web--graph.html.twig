@@ -1,5 +1,7 @@
 <div class={{ children["#storageName"] }}></div>
 
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" type="text/css">
+
 <style>
 .MyDataLabelTooltip {
     position: relative !important;
@@ -15,6 +17,38 @@
     font-weight: 400 !important; 
     text-transform: lowercase;
 }
+
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+
+#play-controls {
+    text-align: center;
+    width: 100%;
+    padding: 5px 0 1em 0;
+}
+#play-controls * {
+    display: inline-block;
+    vertical-align: middle;
+}
+#play-pause-button {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+}
+#play-range {
+    margin: 2.5%;
+    width: 70%;
+}
+#play-output {
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+}
+
 </style>
 <!-- Convert data to JSON to be used in JS file -->
 <script>
@@ -41,6 +75,7 @@ pxDatas.push(
     legendsVisibility: '{{ children["#legendsVisibility"] | raw }}',
     displayOptions : {{ children["#displayOptions"] | default('{}') | raw  }},
     sortDirection : {{ children["#sortDirection"] | raw  | default(0)}},
+    animate : {{ children["#animate"] | raw  | default(0)}}
 });
 </script>
 
